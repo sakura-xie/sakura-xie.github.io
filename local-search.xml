@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>【Hexo】写作指南</title>
+    <link href="/2025/12/25/%E3%80%90Hexo%E3%80%91%E5%86%99%E4%BD%9C%E6%8C%87%E5%8D%97/"/>
+    <url>/2025/12/25/%E3%80%90Hexo%E3%80%91%E5%86%99%E4%BD%9C%E6%8C%87%E5%8D%97/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo-Fluid配置"><a href="#Hexo-Fluid配置" class="headerlink" title="Hexo Fluid配置"></a>Hexo Fluid配置</h1><p>“<strong>站点配置</strong>“ 指的 Hexo 博客目录下的 <code>_config.yml</code>，”<strong>主题配置</strong>“ 指的是 <code>theme/fluid/_config.yml</code>。</p><span id="more"></span><h2 id="覆盖配置"><a href="#覆盖配置" class="headerlink" title="覆盖配置"></a>覆盖配置</h2><p>在博客目录下创建 <code>_config.fluid.yml</code> 文件，将主题的<code>_config.yml</code>全部配置复制过去。修改配置时，只需修改<code>_config.fluid.yml</code>文件即可。</p><h1 id="写文章相关"><a href="#写文章相关" class="headerlink" title="写文章相关"></a>写文章相关</h1><p>使用下面的命令创建一个新文章：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo new [layout] &lt;title&gt; <span class="hljs-comment"># eg: hexo new &quot;我的第一篇文章&quot;</span><br></code></pre></td></tr></table></figure><p><code>[layout]</code>默认即可。生成的文件在<code>source/_posts/我的第一篇文章.md</code></p><h2 id="分类与标签"><a href="#分类与标签" class="headerlink" title="分类与标签"></a>分类与标签</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">categories:<br>- 技术<br>tags: <br>- hexo<br>- 随笔<br></code></pre></td></tr></table></figure><ul><li>分类 <strong>有层级关系</strong>。</li><li>标签是 <strong>自由标签</strong>，无层级。</li></ul><h2 id="摘要方法"><a href="#摘要方法" class="headerlink" title="摘要方法"></a>摘要方法</h2><h2 id="文章写错啦"><a href="#文章写错啦" class="headerlink" title="文章写错啦"></a>文章写错啦</h2><p>删除文章的话可以在文件夹里直接删除，删除后执行命令。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d<br></code></pre></td></tr></table></figure><p>如果已经将文章发布到Git仓库，还需要删除<code>.deploy_git</code>文件夹，然后执行上面的命令。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>【Hexo】博客搭建</title>
+    <link href="/2025/12/25/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"/>
+    <url>/2025/12/25/%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/</url>
+    
+    <content type="html"><![CDATA[<h1 id="想说的话"><a href="#想说的话" class="headerlink" title="想说的话"></a>想说的话</h1><blockquote><p>路虽远，行则必至；事虽难，做则必成。</p></blockquote><p>以前的我总是过度思考，追求完美，总想着一切准备妥当了，再付诸行动。如此，即使很久以前就有搭建博客的想法，但是一直未付出行动。某一刻，突然意识到，其实迈出第一步就已经成功一半了。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>随笔</tag>
+      
+      <tag>hexo</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
