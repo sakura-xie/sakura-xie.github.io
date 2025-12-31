@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>正向代理和反向代理的区别</title>
+    <link href="/2025/12/30/%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E5%92%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <url>/2025/12/30/%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E5%92%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    
+    <content type="html"><![CDATA[<p>正向代理 vs 反向代理</p><table><thead><tr><th>对比维度</th><th>正向代理</th><th>反向代理</th></tr></thead><tbody><tr><td>定义</td><td><strong>客户端</strong>的代理，代表客户端访问外部服务</td><td><strong>服务端</strong>的代理，代表服务器接收并分发客户端请求</td></tr><tr><td>隐藏对象</td><td>隐藏客户端身份（服务端不知道真实请求来源）</td><td>隐藏服务端细节（客户端不知道真实处理请求的服务器）</td></tr><tr><td>客户端是否感知</td><td>客户端需主动配置代理（如浏览器设置代理服务器）</td><td>客户端无感知，直接访问反向代理地址（如访问网站域名）</td></tr><tr><td>典型应用场景</td><td>突破访问限制（如访问外网）、匿名请求、爬虫代理IP</td><td>负载均衡、安全防护（如防火墙）、缓存加速、统一入口</td></tr><tr><td>部署位置</td><td>客户端网络或独立代理服务器（如公司内网代理）</td><td>服务端网络，位于实际服务器之前（如云服务器前端）</td></tr><tr><td>常见工具</td><td>Charles、Fiddler、VPN</td><td>Nginx、Apache Traffic Server</td></tr></tbody></table><p>核心区别</p><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs md">客户端——&gt;正向代理——&gt;互联网<br>(代理代表客户端)<br><br>客户端——&gt;反向代理——&gt;内部服务器集群<br>(代理代表服务器)<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>代理</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>【Hexo】写作指南</title>
+    <link href="/2025/12/25/%E3%80%90Hexo%E3%80%91%E5%86%99%E4%BD%9C%E6%8C%87%E5%8D%97/"/>
+    <url>/2025/12/25/%E3%80%90Hexo%E3%80%91%E5%86%99%E4%BD%9C%E6%8C%87%E5%8D%97/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo-Fluid配置"><a href="#Hexo-Fluid配置" class="headerlink" title="Hexo Fluid配置"></a>Hexo Fluid配置</h1><p>“<strong>站点配置</strong>“ 指的 Hexo 博客目录下的 <code>_config.yml</code>，”<strong>主题配置</strong>“ 指的是 <code>theme/fluid/_config.yml</code>。</p><h2 id="覆盖配置"><a href="#覆盖配置" class="headerlink" title="覆盖配置"></a>覆盖配置</h2><p>在博客目录下创建 <code>_config.fluid.yml</code> 文件，将主题的<code>_config.yml</code>全部配置复制过去。修改配置时，只需修改<code>_config.fluid.yml</code>文件即可。</p><h1 id="写文章相关"><a href="#写文章相关" class="headerlink" title="写文章相关"></a>写文章相关</h1><p>使用下面的命令创建一个新文章：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo new [layout] &lt;title&gt; <span class="hljs-comment"># eg: hexo new &quot;我的第一篇文章&quot;</span><br></code></pre></td></tr></table></figure><p><code>[layout]</code>默认即可。生成的文件在<code>source/_posts/我的第一篇文章.md</code></p><h2 id="分类与标签"><a href="#分类与标签" class="headerlink" title="分类与标签"></a>分类与标签</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">categories:<br>- 技术<br>tags: <br>- hexo<br>- 随笔<br></code></pre></td></tr></table></figure><ul><li>分类 <strong>有层级关系</strong>。</li><li>标签是 <strong>自由标签</strong>，无层级。</li></ul><h2 id="摘要方法"><a href="#摘要方法" class="headerlink" title="摘要方法"></a>摘要方法</h2><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs md">在想要摘要的地方输入<br>&lt;!-- more --&gt;<br>正文<br></code></pre></td></tr></table></figure><h2 id="文章写错啦"><a href="#文章写错啦" class="headerlink" title="文章写错啦"></a>文章写错啦</h2><p>删除文章的话可以在文件夹里直接删除，删除后执行命令。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d<br></code></pre></td></tr></table></figure><p>如果已经将文章发布到Git仓库，还需要删除<code>.deploy_git</code>文件夹，然后执行上面的命令。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>【Hexo】博客搭建</title>
+    <link href="/2025/12/25/%E3%80%90Hexo%E3%80%91%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
+    <url>/2025/12/25/%E3%80%90Hexo%E3%80%91%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    
+    <content type="html"><![CDATA[<h1 id="想说的话"><a href="#想说的话" class="headerlink" title="想说的话"></a>想说的话</h1><blockquote><p>路虽远，行则必至；事虽难，做则必成。</p></blockquote><p>以前的我总是过度思考，追求完美，总想着一切准备妥当了，再付诸行动。如此，即使很久以前就有搭建博客的想法，但是一直未付出行动。某一刻，突然意识到，其实迈出第一步就已经成功一半了。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>随笔</tag>
+      
+      <tag>hexo</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
