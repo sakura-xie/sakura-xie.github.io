@@ -1,0 +1,787 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog.png">
+  <link rel="icon" href="/img/dog.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sakura-xie">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="Agent 是一个能够感知环境、自主决策并执行行动以实现目标的系统或实体。Workflow 是由一系列任务或步骤组成的有序执行流程，按照事先定义的规则和逻辑运作，用于规范业务流程或操作的结构化执行路径。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Workflow（工作流）和Agent（智能体）有什么区别？">
+<meta property="og:url" content="https://sakura-xie.github.io/2026/01/09/Workflow%EF%BC%88%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89%E5%92%8CAgent%EF%BC%88%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%89%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/index.html">
+<meta property="og:site_name" content="Sakura-xie&#39;s Blog">
+<meta property="og:description" content="Agent 是一个能够感知环境、自主决策并执行行动以实现目标的系统或实体。Workflow 是由一系列任务或步骤组成的有序执行流程，按照事先定义的规则和逻辑运作，用于规范业务流程或操作的结构化执行路径。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-09T11:17:35.000Z">
+<meta property="article:modified_time" content="2026-01-16T11:12:33.335Z">
+<meta property="article:author" content="Sakura-xie">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Workflow">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>Workflow（工作流）和Agent（智能体）有什么区别？ - Sakura-xie&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="https://jsd.cdn.zzko.cn/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+<link rel="stylesheet" href="https://jsd.cdn.zzko.cn/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sakura-xie.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"u5HR3OpYhCrvRxN5fklmHud6-gzGzoHsz","app_key":"gtzKcZNhHg9Am7uzMXKjV4HU","server_url":"https://u5hr3opy.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sakura-xie&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="Workflow（工作流）和Agent（智能体）有什么区别？"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-09 19:17" pubdate>
+          2026年1月9日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          2.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          22 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">Workflow（工作流）和Agent（智能体）有什么区别？</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="一、Agent（智能体）"><a href="#一、Agent（智能体）" class="headerlink" title="一、Agent（智能体）"></a>一、Agent（智能体）</h2><h3 id="1、定义与核心特性"><a href="#1、定义与核心特性" class="headerlink" title="1、定义与核心特性"></a>1、定义与核心特性</h3><p><strong>Agent 是一个能够感知环境、自主决策并执行行动以实现目标的系统或实体。</strong> 它的核心特性在于：</p>
+<ul>
+<li><p><strong>自主性</strong></p>
+<p>能在没有直接干预下操作和控制自己的行动。例如，智能客服 Agent 在和用户对话过程中，能够依据用户输入的内容、情绪状态以及过往的对话记录，灵活地挑选回复策略，既可能直接回答问题，也可能查询知识库，甚至将对话转接给人工客服。</p>
+</li>
+<li><p><strong>反应性</strong></p>
+<p>能感知环境并及时响应环境变化。以自动驾驶汽车中的 Agent 为例，它凭借摄像头、雷达等传感器感知路况、交通信号等环境信息，然后控制汽车的行驶速度、方向等，从而对环境做出反馈。</p>
+</li>
+<li><p><strong>主动性</strong></p>
+<p>能主动采取目标导向的行为。例如，投资 Agent 的目标或许是在一定风险范围内实现投资收益的最大化，它会实时分析市场数据，做出买卖决策以向目标迈进。</p>
+</li>
+</ul>
+<h3 id="2、技术实现根基"><a href="#2、技术实现根基" class="headerlink" title="2、技术实现根基"></a>2、技术实现根基</h3><p>构建功能完善的 Agent 依赖于多项人工智能技术的深度融合：</p>
+<ul>
+<li><p><strong>机器学习与强化学习</strong><br>Agent 的核心决策能力通常来源于机器学习，特别是强化学习技术。通过与环境的持续交互和反馈，Agent 能逐步优化决策模型，学会在复杂情境中选择更有效的行动策略。例如，AlphaGo 正是通过大量自我对弈的强化学习，掌握了超越人类的围棋策略。</p>
+</li>
+<li><p><strong>自然语言处理（NLP）</strong><br>为实现自然的人机交互，Agent 需要借助 NLP 技术来理解与生成人类语言。这使其能够准确解析用户意图，并以流畅的语言进行回应。目前的大语言模型（LLM）进一步增强了 Agent 在对话、推理与文本生成方面的能力，成为许多智能对话系统的核心支撑。</p>
+</li>
+<li><p><strong>感知与执行模块</strong><br>感知模块使 Agent 能够“看见”或“感知”环境，如图像识别、语音识别、传感器数据处理等；执行模块则负责将决策转化为实际动作，包括控制硬件设备、调用软件接口、执行具体操作等。这两个模块的协同工作，构成了 Agent 在真实环境中感知—决策—行动的完整闭环。</p>
+</li>
+<li><p><strong>规划与推理能力</strong><br>现代 Agent 通常还具备任务分解、路径规划与逻辑推理能力，可处理多步骤的复杂目标。借助大语言模型与符号推理的结合，Agent 不仅能做出即时反应，还能进行长远规划和因果推断，从而更好地完成结构化任务。</p>
+</li>
+</ul>
+<h2 id="二、Workflow（工作流）"><a href="#二、Workflow（工作流）" class="headerlink" title="二、Workflow（工作流）"></a>二、Workflow（工作流）</h2><h3 id="1、定义与核心特性-1"><a href="#1、定义与核心特性-1" class="headerlink" title="1、定义与核心特性"></a>1、定义与核心特性</h3><p>Workflow 是由一系列任务或步骤组成的有序执行流程，按照事先定义的规则和逻辑运作，用于规范业务流程或操作的结构化执行路径。其核心特性包含：</p>
+<ul>
+<li><p><strong>固定流程</strong><br>任务执行顺序与依赖关系在设计与配置阶段即已确定，形成清晰、不可随意调换的线性或分支路径。例如软件开发中的典型流程“需求分析→设计→编码→测试→部署”，各阶段严格依赖前序阶段的输出，确保流程按既定顺序推进。</p>
+</li>
+<li><p><strong>规则驱动</strong><br>Workflow 依据预设的业务规则和条件逻辑自动选择执行路径。规则既可以是简单条件，如“订单金额大于1000元则需经理审批”；也可嵌套复杂逻辑，由规则引擎自动判断与路由。这种机制实现了流程的自动化决策与控制。</p>
+</li>
+<li><p><strong>可预测性强</strong><br>由于流程结构与执行规则事先明确定义，工作流在确定输入条件下具有高度可预测的输出结果。这一特性使其特别适用于对流程准确性、一致性与稳定性要求较高的任务场景，如财务审批、生产线操作等。</p>
+</li>
+</ul>
+<h3 id="2、技术实现根基-1"><a href="#2、技术实现根基-1" class="headerlink" title="2、技术实现根基"></a>2、技术实现根基</h3><p>流程管理工具是实现工作流自动化与可视化的重要支撑，常见工具包括：</p>
+<ul>
+<li><p><strong>BPMN（业务流程建模符号）</strong><br>BPMN 是一套标准的图形化建模语言，提供丰富的符号与语义，可用于直观描述业务流程中的任务、网关、事件与流向。它有效降低了业务人员与技术人员之间的沟通门槛，促进流程设计的清晰表达与理解。</p>
+</li>
+<li><p><strong>Airflow</strong><br>Apache Airflow 是一款开源的工作流编排与调度平台，特别适用于复杂的数据处理流水线。它允许将数据处理任务分解为多个可管理的任务单元，并通过有向无环图（DAG）明确定义任务间的依赖关系和执行顺序，实现高效的任务调度与监控。</p>
+</li>
+<li><p><strong>GitHub Actions</strong><br>作为集成在 GitHub 平台上的持续集成与持续部署（CI&#x2F;CD）工具，GitHub Actions 支持在代码仓库中定义自动化工作流。开发者可通过 YAML 文件配置触发条件（如代码推送、拉取请求等）及相应操作（如运行测试、构建镜像、自动部署），从而实现软件开发流程的高度自动化。</p>
+</li>
+</ul>
+<p>在开发与实现工作流系统时，也常借助<strong>编程语言中的条件与循环逻辑</strong>来构建流程控制逻辑：</p>
+<ul>
+<li><strong>条件语句</strong>（如 <code>if-else</code>、<code>switch</code>）用于根据运行时状态决定流程分支，例如：若订单状态为“已支付”，则触发发货流程，否则进入待处理队列。</li>
+<li><strong>循环语句</strong>（如 <code>for</code>、<code>while</code>）可支持重复性任务的批量执行，例如遍历数据集中的每一条记录，依次执行清洗与校验操作。</li>
+</ul>
+<h2 id="三、Workflow-和-Agent-区别"><a href="#三、Workflow-和-Agent-区别" class="headerlink" title="三、Workflow 和 Agent 区别"></a>三、Workflow 和 Agent 区别</h2><p>Workflow（工作流）和 Agent（智能体）是两种不同的自动化与智能执行范式，它们在设计理念、执行方式和适用场景上有显著区别。</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Workflow（工作流）</th>
+<th>Agent（智能体）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>核心理念</strong></td>
+<td>预定义的、结构化的流程执行</td>
+<td>自主的、目标驱动的智能决策</td>
+</tr>
+<tr>
+<td><strong>流程控制</strong></td>
+<td>固定顺序，规则驱动，可预测</td>
+<td>动态规划，实时决策‘灵活适应</td>
+</tr>
+<tr>
+<td><strong>决策能力</strong></td>
+<td>基于预设规则的条件分支</td>
+<td>基于感知与推理的自主决策</td>
+</tr>
+<tr>
+<td><strong>适应性</strong></td>
+<td>低（流程变化需重新设计）</td>
+<td>高（可以应对未预见的场景）</td>
+</tr>
+<tr>
+<td><strong>典型工具</strong></td>
+<td>BPMN，Airflow，Github Actions</td>
+<td>基于LLM的Agent框架</td>
+</tr>
+<tr>
+<td><strong>执行单位</strong></td>
+<td>任务或步骤</td>
+<td>行动或行为</td>
+</tr>
+<tr>
+<td><strong>人机交互</strong></td>
+<td>通常无需实时交互</td>
+<td>可自然交互，接收指令并反馈</td>
+</tr>
+<tr>
+<td><strong>代表场景</strong></td>
+<td>订单审核流水线</td>
+<td>个人智能助理、智能客服机器人</td>
+</tr>
+</tbody></table>
+<h3 id="1、设计哲学不同"><a href="#1、设计哲学不同" class="headerlink" title="1、设计哲学不同"></a>1、设计哲学不同</h3><ul>
+<li><strong>Workflow</strong> 强调<strong>流程的规范性与可重复性</strong>，追求在确定输入下输出稳定可靠。</li>
+<li><strong>Agent</strong> 强调<strong>自主性与适应性</strong>，能够在不确定环境中为实现目标主动调整策略。</li>
+</ul>
+<h3 id="2、执行逻辑不同"><a href="#2、执行逻辑不同" class="headerlink" title="2、执行逻辑不同"></a>2、执行逻辑不同</h3><ul>
+<li><strong>Workflow</strong> 是“如果-则”规则引擎的延伸，路径在设计阶段已基本确定。</li>
+<li><strong>Agent</strong> 是“感知-思考-行动”循环的体现，路径在执行中动态生成。</li>
+</ul>
+<h3 id="3、适用场景不同"><a href="#3、适用场景不同" class="headerlink" title="3、适用场景不同"></a>3、适用场景不同</h3><ul>
+<li><strong>Workflow</strong> 适合<strong>结构化、高频、易标准化</strong>的业务流程，例如：报销审批、软件发布流程、数据ETL流水线。</li>
+<li><strong>Agent</strong> 适合<strong>非结构化、需推理、环境多变</strong>的任务，例如：客户问题解答、个性化行程规划、游戏NPC行为控制。</li>
+</ul>
+<h3 id="4、技术实现不同"><a href="#4、技术实现不同" class="headerlink" title="4、技术实现不同"></a>4、技术实现不同</h3><ul>
+<li><strong>Workflow</strong> 依赖流程引擎、规则引擎、任务调度器等。</li>
+<li><strong>Agent</strong> 依赖感知模块、决策模型（如强化学习、LLM）、执行器等，更强调AI能力的整合。</li>
+</ul>
+<h2 id="四、Agent-和-Workflow-的融合趋势"><a href="#四、Agent-和-Workflow-的融合趋势" class="headerlink" title="四、Agent 和 Workflow 的融合趋势"></a>四、Agent 和 Workflow 的融合趋势</h2><p>尽管 Agent 和 Workflow 在诸多方面存在差异，但在实际应用中，它们并非完全相互独立，而是呈现出融合的态势。下面是几种典型融合模式：</p>
+<h3 id="1、流程为骨架，Agent-为关节"><a href="#1、流程为骨架，Agent-为关节" class="headerlink" title="1、流程为骨架，Agent 为关节"></a><strong>1、流程为骨架，Agent 为关节</strong></h3><ul>
+<li><strong>模式</strong>：Workflow 定义主干流程和关键节点，Agent 在节点内进行智能决策与执行</li>
+<li><strong>实例</strong>：<ul>
+<li><strong>智能审批流程</strong>：Workflow 规定“提交→审核→批复→归档”流程，Agent 在“审核”环节自动分析内容、识别风险并给出建议</li>
+<li><strong>客户服务工单系统</strong>：流程步骤固定，但由 Agent 自动分类工单、生成回复初稿、甚至自主解决常见问题</li>
+</ul>
+</li>
+</ul>
+<h3 id="2、Agent-驱动动态流程生成"><a href="#2、Agent-驱动动态流程生成" class="headerlink" title="2、Agent 驱动动态流程生成"></a><strong>2、Agent 驱动动态流程生成</strong></h3><ul>
+<li><strong>模式</strong>：Agent 根据目标与实时环境，动态生成并执行临时性工作流</li>
+<li><strong>实例</strong>：<ul>
+<li><strong>个性化营销活动执行</strong>：Agent 根据用户行为数据，实时组装“触发→互动→转化”流程，并自动执行</li>
+<li><strong>应急响应系统</strong>：突发事件中，Agent 自动生成处置流程并协调各方资源</li>
+</ul>
+</li>
+</ul>
+<h3 id="3、双向增强型协作"><a href="#3、双向增强型协作" class="headerlink" title="3、双向增强型协作"></a><strong>3、双向增强型协作</strong></h3><ul>
+<li><strong>模式</strong>：Workflow 与 Agent 并行存在、相互调用</li>
+<li><strong>实例</strong>：<ul>
+<li><strong>研发运维一体化（DevOps）</strong>：CI&#x2F;CD 流水线（Workflow）在部署失败时，自动调用排障 Agent 进行分析与修复尝试</li>
+<li><strong>财务审计流程</strong>：标准审计步骤中嵌入 Agent，实时分析异常交易并触发深入审查子流程</li>
+</ul>
+</li>
+</ul>
+<h2 id="五、综上总结"><a href="#五、综上总结" class="headerlink" title="五、综上总结"></a>五、综上总结</h2><p>Workflow 是<strong>结构化的流程引擎</strong>，擅长以<strong>高效、稳定、可预测</strong>的方式自动化执行预定义的线性任务序列，其核心价值在于保障流程的<strong>规范性与一致性</strong>。</p>
+<p>Agent 则是<strong>智能的自主实体</strong>，具备感知环境、规划决策、动态执行的能力，核心优势在于处理<strong>不确定性、非结构化任务</strong>并实现<strong>目标驱动的灵活适应</strong>。</p>
+<p>选择 Agent 还是 Workflow，并非简单的优劣判断，而是由场景驱动的适配问题。</p>
+<ul>
+<li>当流程固定、规则清晰时，Workflow 是提升效率的得力工具。</li>
+<li>当面对复杂、多变、需要判断与交互的情境时，Agent 的智能与灵活性则必不可少。</li>
+</ul>
+<p>而在智能化转型的浪潮下，<strong>Workflow 与 Agent 的融合</strong>正成为关键趋势。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Agent/" class="print-no-link">#Agent</a>
+      
+        <a href="/tags/Workflow/" class="print-no-link">#Workflow</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/01/16/%E6%8F%90%E7%A4%BA%E8%AF%8D%E7%BC%96%E5%86%99%E4%B8%8E%E4%BC%98%E5%8C%96/" title="提示词编写与优化">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">提示词编写与优化</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/01/05/EDR%E3%80%81NDR%E3%80%81XDR%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%8C%BA%E5%88%AB/" title="EDR、NDR、XDR工作原理及区别">
+                        <span class="hidden-mobile">EDR、NDR、XDR工作原理及区别</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        Views: 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        Visitors: 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>

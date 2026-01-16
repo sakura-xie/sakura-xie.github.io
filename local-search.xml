@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<search>
+  
+  
+  
+  <entry>
+    <title>提示词编写与优化</title>
+    <link href="/2026/01/16/%E6%8F%90%E7%A4%BA%E8%AF%8D%E7%BC%96%E5%86%99%E4%B8%8E%E4%BC%98%E5%8C%96/"/>
+    <url>/2026/01/16/%E6%8F%90%E7%A4%BA%E8%AF%8D%E7%BC%96%E5%86%99%E4%B8%8E%E4%BC%98%E5%8C%96/</url>
+    
+    <content type="html"><![CDATA[<h2 id="1、什么是提示词工程？"><a href="#1、什么是提示词工程？" class="headerlink" title="1、什么是提示词工程？"></a>1、什么是提示词工程？</h2><blockquote><p>可以简单理解为 <strong>“向大模型高效提问的说明书”</strong></p></blockquote><p>就像人与人沟通时，<strong>提问方式不同，得到的答案质量可能天差地别</strong>，与大模型对话也是如此。提示词工程就是通过设计问题或指令的格式、结构、关键词，让模型更精准地理解需求，输出更符合预期的结果。</p><h2 id="2、提示词工程为何如此重要？"><a href="#2、提示词工程为何如此重要？" class="headerlink" title="2、提示词工程为何如此重要？"></a>2、提示词工程为何如此重要？</h2><blockquote><p>提示词是<strong>AI时代的“思考脚手架”</strong>——你给的框架越清晰，AI搭建的答案就越稳固有用。<br>不会提问的人，在AI时代将错失90%的生产力提升机会。</p></blockquote><p>AI的计算成本是固定的，但好提示能让同样的计算力产出高数倍价值的信息。如同样的燃油，好引擎设计能多跑50%里程。</p><p>AI的“思维”与人不同，好提示是翻译人类意图的“对齐工具”。如同专业翻译能让双方深度沟通，而非简单单词转化。</p><p><strong>案例对比</strong>：</p><ul><li><strong>模糊指令</strong>：“介绍一下机器学习” → 输出百科式概述，无实用价值。</li><li><strong>精准指令</strong>：“对比监督学习和无监督学习的优缺点，各举一个实际工业应用案例” → 输出可直接用于技术汇报的内容。</li></ul><h2 id="3、如何写出高质量提示词？"><a href="#3、如何写出高质量提示词？" class="headerlink" title="3、如何写出高质量提示词？"></a>3、如何写出高质量提示词？</h2><p>一个高效的提示词应包含以下4个核心要素：</p><blockquote><p>角色设定，任务描述，约束条件，输出格式</p></blockquote><h3 id="3-1-角色设定"><a href="#3-1-角色设定" class="headerlink" title="3.1  角色设定"></a>3.1  角色设定</h3><ul><li><p>告诉AI自己的身份和专业领域，调用相关知识库</p></li><li><p><strong>要点：</strong></p><ul><li>明确具体职业（如“资深产品经理”“python开发专家”）</li><li>可附加经验年限（“10年经验的数据分析师”）</li><li>或指定组织背景（“联合国气候报告撰写人”）</li></ul></li><li><p><strong>示例：</strong></p><ul><li>“写一份安全分析报告”</li><li>“你是一位专注Web安全的分析师，擅长输出安全分析报告”</li></ul></li></ul><h3 id="3-2-任务描述"><a href="#3-2-任务描述" class="headerlink" title="3.2 任务描述"></a>3.2 任务描述</h3><ul><li>清晰界定要做什么，避免模糊请求</li><li><strong>要点</strong>：<ul><li>使用动作指令（分析&#x2F;比较&#x2F;生成&#x2F;解释）</li><li>分步骤拆解复杂任务（1、…2、…）</li><li>必要时提供背景信息（项目目标、受众群体）</li></ul></li><li><strong>示例</strong>：<ul><li>“处理数据”</li><li>“请完成以下三步：1.清洗用户年龄字段的异常值 2.计算各城市平均购买频次 3.找出增长最快的前三个区域…”</li></ul></li></ul><h3 id="3-3-约束条件"><a href="#3-3-约束条件" class="headerlink" title="3.3 约束条件"></a>3.3 约束条件</h3><ul><li><p>限定输出边界，控制质量与范围</p></li><li><p><strong>要点</strong>：</p><ul><li>长度限制（不超过500字&#x2F;列出5个要点）</li><li>风格要求（专业严谨&#x2F;幽默风趣&#x2F;儿童易懂）</li><li>内容排除（“避免使用专业术语”“不要提及政治”）</li><li>质量要求（“基于2023年后数据”“需引用可靠来源”）</li></ul></li><li><p><strong>示例</strong>：</p><ul><li>“写个介绍”</li><li>“用初中生能懂的语言，200字内介绍量子计算，避免公式和学术词汇…”</li></ul></li></ul><h3 id="3-4-输出格式"><a href="#3-4-输出格式" class="headerlink" title="3.4 输出格式"></a>3.4 输出格式</h3><ul><li><p>结构化呈现结果，提升可直接使用性</p></li><li><p><strong>要点</strong>：</p><ul><li>指定呈现形式（表格&#x2F;代码块&#x2F;列表&#x2F;JSON）</li><li>明确结构框架（先摘要后细节&#x2F;分章节呈现）</li><li>可提供模板示例（“按以下格式：标题→摘要→正文→结论”）</li></ul></li><li><p><strong>示例</strong>：</p><ul><li>“给我结果”</li><li>“请用Markdown表格呈现，包含三列：国家、2023年GDP、增长率；最后附加一段趋势分析…”</li></ul></li></ul><h2 id="4、实用转换公式"><a href="#4、实用转换公式" class="headerlink" title="4、实用转换公式"></a>4、实用转换公式</h2><p><strong>糟糕Prompt改进模板：</strong></p><figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs css"><span class="hljs-selector-attr">[原模糊需求]</span> → <span class="hljs-selector-attr">[角色]</span> + <span class="hljs-selector-attr">[具体任务]</span> + <span class="hljs-selector-attr">[分步骤]</span> + <span class="hljs-selector-attr">[输出格式]</span> + <span class="hljs-selector-attr">[长度/数量限制]</span><br></code></pre></td></tr></table></figure><p><strong>示例转换：</strong></p><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs">“帮忙写点内容” → “作为社交媒体运营，为一款新咖啡机写3条宣传文案：1. 突出便捷性 2. 强调口感 3. 结合家庭场景。每条不超过20字，使用活泼语气”<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>大模型</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>Workflow（工作流）和Agent（智能体）有什么区别？</title>
+    <link href="/2026/01/09/Workflow%EF%BC%88%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89%E5%92%8CAgent%EF%BC%88%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%89%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/"/>
+    <url>/2026/01/09/Workflow%EF%BC%88%E5%B7%A5%E4%BD%9C%E6%B5%81%EF%BC%89%E5%92%8CAgent%EF%BC%88%E6%99%BA%E8%83%BD%E4%BD%93%EF%BC%89%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F/</url>
+    
+    <content type="html"><![CDATA[<h2 id="一、Agent（智能体）"><a href="#一、Agent（智能体）" class="headerlink" title="一、Agent（智能体）"></a>一、Agent（智能体）</h2><h3 id="1、定义与核心特性"><a href="#1、定义与核心特性" class="headerlink" title="1、定义与核心特性"></a>1、定义与核心特性</h3><p><strong>Agent 是一个能够感知环境、自主决策并执行行动以实现目标的系统或实体。</strong> 它的核心特性在于：</p><ul><li><p><strong>自主性</strong></p><p>能在没有直接干预下操作和控制自己的行动。例如，智能客服 Agent 在和用户对话过程中，能够依据用户输入的内容、情绪状态以及过往的对话记录，灵活地挑选回复策略，既可能直接回答问题，也可能查询知识库，甚至将对话转接给人工客服。</p></li><li><p><strong>反应性</strong></p><p>能感知环境并及时响应环境变化。以自动驾驶汽车中的 Agent 为例，它凭借摄像头、雷达等传感器感知路况、交通信号等环境信息，然后控制汽车的行驶速度、方向等，从而对环境做出反馈。</p></li><li><p><strong>主动性</strong></p><p>能主动采取目标导向的行为。例如，投资 Agent 的目标或许是在一定风险范围内实现投资收益的最大化，它会实时分析市场数据，做出买卖决策以向目标迈进。</p></li></ul><h3 id="2、技术实现根基"><a href="#2、技术实现根基" class="headerlink" title="2、技术实现根基"></a>2、技术实现根基</h3><p>构建功能完善的 Agent 依赖于多项人工智能技术的深度融合：</p><ul><li><p><strong>机器学习与强化学习</strong><br>Agent 的核心决策能力通常来源于机器学习，特别是强化学习技术。通过与环境的持续交互和反馈，Agent 能逐步优化决策模型，学会在复杂情境中选择更有效的行动策略。例如，AlphaGo 正是通过大量自我对弈的强化学习，掌握了超越人类的围棋策略。</p></li><li><p><strong>自然语言处理（NLP）</strong><br>为实现自然的人机交互，Agent 需要借助 NLP 技术来理解与生成人类语言。这使其能够准确解析用户意图，并以流畅的语言进行回应。目前的大语言模型（LLM）进一步增强了 Agent 在对话、推理与文本生成方面的能力，成为许多智能对话系统的核心支撑。</p></li><li><p><strong>感知与执行模块</strong><br>感知模块使 Agent 能够“看见”或“感知”环境，如图像识别、语音识别、传感器数据处理等；执行模块则负责将决策转化为实际动作，包括控制硬件设备、调用软件接口、执行具体操作等。这两个模块的协同工作，构成了 Agent 在真实环境中感知—决策—行动的完整闭环。</p></li><li><p><strong>规划与推理能力</strong><br>现代 Agent 通常还具备任务分解、路径规划与逻辑推理能力，可处理多步骤的复杂目标。借助大语言模型与符号推理的结合，Agent 不仅能做出即时反应，还能进行长远规划和因果推断，从而更好地完成结构化任务。</p></li></ul><h2 id="二、Workflow（工作流）"><a href="#二、Workflow（工作流）" class="headerlink" title="二、Workflow（工作流）"></a>二、Workflow（工作流）</h2><h3 id="1、定义与核心特性-1"><a href="#1、定义与核心特性-1" class="headerlink" title="1、定义与核心特性"></a>1、定义与核心特性</h3><p>Workflow 是由一系列任务或步骤组成的有序执行流程，按照事先定义的规则和逻辑运作，用于规范业务流程或操作的结构化执行路径。其核心特性包含：</p><ul><li><p><strong>固定流程</strong><br>任务执行顺序与依赖关系在设计与配置阶段即已确定，形成清晰、不可随意调换的线性或分支路径。例如软件开发中的典型流程“需求分析→设计→编码→测试→部署”，各阶段严格依赖前序阶段的输出，确保流程按既定顺序推进。</p></li><li><p><strong>规则驱动</strong><br>Workflow 依据预设的业务规则和条件逻辑自动选择执行路径。规则既可以是简单条件，如“订单金额大于1000元则需经理审批”；也可嵌套复杂逻辑，由规则引擎自动判断与路由。这种机制实现了流程的自动化决策与控制。</p></li><li><p><strong>可预测性强</strong><br>由于流程结构与执行规则事先明确定义，工作流在确定输入条件下具有高度可预测的输出结果。这一特性使其特别适用于对流程准确性、一致性与稳定性要求较高的任务场景，如财务审批、生产线操作等。</p></li></ul><h3 id="2、技术实现根基-1"><a href="#2、技术实现根基-1" class="headerlink" title="2、技术实现根基"></a>2、技术实现根基</h3><p>流程管理工具是实现工作流自动化与可视化的重要支撑，常见工具包括：</p><ul><li><p><strong>BPMN（业务流程建模符号）</strong><br>BPMN 是一套标准的图形化建模语言，提供丰富的符号与语义，可用于直观描述业务流程中的任务、网关、事件与流向。它有效降低了业务人员与技术人员之间的沟通门槛，促进流程设计的清晰表达与理解。</p></li><li><p><strong>Airflow</strong><br>Apache Airflow 是一款开源的工作流编排与调度平台，特别适用于复杂的数据处理流水线。它允许将数据处理任务分解为多个可管理的任务单元，并通过有向无环图（DAG）明确定义任务间的依赖关系和执行顺序，实现高效的任务调度与监控。</p></li><li><p><strong>GitHub Actions</strong><br>作为集成在 GitHub 平台上的持续集成与持续部署（CI&#x2F;CD）工具，GitHub Actions 支持在代码仓库中定义自动化工作流。开发者可通过 YAML 文件配置触发条件（如代码推送、拉取请求等）及相应操作（如运行测试、构建镜像、自动部署），从而实现软件开发流程的高度自动化。</p></li></ul><p>在开发与实现工作流系统时，也常借助<strong>编程语言中的条件与循环逻辑</strong>来构建流程控制逻辑：</p><ul><li><strong>条件语句</strong>（如 <code>if-else</code>、<code>switch</code>）用于根据运行时状态决定流程分支，例如：若订单状态为“已支付”，则触发发货流程，否则进入待处理队列。</li><li><strong>循环语句</strong>（如 <code>for</code>、<code>while</code>）可支持重复性任务的批量执行，例如遍历数据集中的每一条记录，依次执行清洗与校验操作。</li></ul><h2 id="三、Workflow-和-Agent-区别"><a href="#三、Workflow-和-Agent-区别" class="headerlink" title="三、Workflow 和 Agent 区别"></a>三、Workflow 和 Agent 区别</h2><p>Workflow（工作流）和 Agent（智能体）是两种不同的自动化与智能执行范式，它们在设计理念、执行方式和适用场景上有显著区别。</p><table><thead><tr><th>维度</th><th>Workflow（工作流）</th><th>Agent（智能体）</th></tr></thead><tbody><tr><td><strong>核心理念</strong></td><td>预定义的、结构化的流程执行</td><td>自主的、目标驱动的智能决策</td></tr><tr><td><strong>流程控制</strong></td><td>固定顺序，规则驱动，可预测</td><td>动态规划，实时决策‘灵活适应</td></tr><tr><td><strong>决策能力</strong></td><td>基于预设规则的条件分支</td><td>基于感知与推理的自主决策</td></tr><tr><td><strong>适应性</strong></td><td>低（流程变化需重新设计）</td><td>高（可以应对未预见的场景）</td></tr><tr><td><strong>典型工具</strong></td><td>BPMN，Airflow，Github Actions</td><td>基于LLM的Agent框架</td></tr><tr><td><strong>执行单位</strong></td><td>任务或步骤</td><td>行动或行为</td></tr><tr><td><strong>人机交互</strong></td><td>通常无需实时交互</td><td>可自然交互，接收指令并反馈</td></tr><tr><td><strong>代表场景</strong></td><td>订单审核流水线</td><td>个人智能助理、智能客服机器人</td></tr></tbody></table><h3 id="1、设计哲学不同"><a href="#1、设计哲学不同" class="headerlink" title="1、设计哲学不同"></a>1、设计哲学不同</h3><ul><li><strong>Workflow</strong> 强调<strong>流程的规范性与可重复性</strong>，追求在确定输入下输出稳定可靠。</li><li><strong>Agent</strong> 强调<strong>自主性与适应性</strong>，能够在不确定环境中为实现目标主动调整策略。</li></ul><h3 id="2、执行逻辑不同"><a href="#2、执行逻辑不同" class="headerlink" title="2、执行逻辑不同"></a>2、执行逻辑不同</h3><ul><li><strong>Workflow</strong> 是“如果-则”规则引擎的延伸，路径在设计阶段已基本确定。</li><li><strong>Agent</strong> 是“感知-思考-行动”循环的体现，路径在执行中动态生成。</li></ul><h3 id="3、适用场景不同"><a href="#3、适用场景不同" class="headerlink" title="3、适用场景不同"></a>3、适用场景不同</h3><ul><li><strong>Workflow</strong> 适合<strong>结构化、高频、易标准化</strong>的业务流程，例如：报销审批、软件发布流程、数据ETL流水线。</li><li><strong>Agent</strong> 适合<strong>非结构化、需推理、环境多变</strong>的任务，例如：客户问题解答、个性化行程规划、游戏NPC行为控制。</li></ul><h3 id="4、技术实现不同"><a href="#4、技术实现不同" class="headerlink" title="4、技术实现不同"></a>4、技术实现不同</h3><ul><li><strong>Workflow</strong> 依赖流程引擎、规则引擎、任务调度器等。</li><li><strong>Agent</strong> 依赖感知模块、决策模型（如强化学习、LLM）、执行器等，更强调AI能力的整合。</li></ul><h2 id="四、Agent-和-Workflow-的融合趋势"><a href="#四、Agent-和-Workflow-的融合趋势" class="headerlink" title="四、Agent 和 Workflow 的融合趋势"></a>四、Agent 和 Workflow 的融合趋势</h2><p>尽管 Agent 和 Workflow 在诸多方面存在差异，但在实际应用中，它们并非完全相互独立，而是呈现出融合的态势。下面是几种典型融合模式：</p><h3 id="1、流程为骨架，Agent-为关节"><a href="#1、流程为骨架，Agent-为关节" class="headerlink" title="1、流程为骨架，Agent 为关节"></a><strong>1、流程为骨架，Agent 为关节</strong></h3><ul><li><strong>模式</strong>：Workflow 定义主干流程和关键节点，Agent 在节点内进行智能决策与执行</li><li><strong>实例</strong>：<ul><li><strong>智能审批流程</strong>：Workflow 规定“提交→审核→批复→归档”流程，Agent 在“审核”环节自动分析内容、识别风险并给出建议</li><li><strong>客户服务工单系统</strong>：流程步骤固定，但由 Agent 自动分类工单、生成回复初稿、甚至自主解决常见问题</li></ul></li></ul><h3 id="2、Agent-驱动动态流程生成"><a href="#2、Agent-驱动动态流程生成" class="headerlink" title="2、Agent 驱动动态流程生成"></a><strong>2、Agent 驱动动态流程生成</strong></h3><ul><li><strong>模式</strong>：Agent 根据目标与实时环境，动态生成并执行临时性工作流</li><li><strong>实例</strong>：<ul><li><strong>个性化营销活动执行</strong>：Agent 根据用户行为数据，实时组装“触发→互动→转化”流程，并自动执行</li><li><strong>应急响应系统</strong>：突发事件中，Agent 自动生成处置流程并协调各方资源</li></ul></li></ul><h3 id="3、双向增强型协作"><a href="#3、双向增强型协作" class="headerlink" title="3、双向增强型协作"></a><strong>3、双向增强型协作</strong></h3><ul><li><strong>模式</strong>：Workflow 与 Agent 并行存在、相互调用</li><li><strong>实例</strong>：<ul><li><strong>研发运维一体化（DevOps）</strong>：CI&#x2F;CD 流水线（Workflow）在部署失败时，自动调用排障 Agent 进行分析与修复尝试</li><li><strong>财务审计流程</strong>：标准审计步骤中嵌入 Agent，实时分析异常交易并触发深入审查子流程</li></ul></li></ul><h2 id="五、综上总结"><a href="#五、综上总结" class="headerlink" title="五、综上总结"></a>五、综上总结</h2><p>Workflow 是<strong>结构化的流程引擎</strong>，擅长以<strong>高效、稳定、可预测</strong>的方式自动化执行预定义的线性任务序列，其核心价值在于保障流程的<strong>规范性与一致性</strong>。</p><p>Agent 则是<strong>智能的自主实体</strong>，具备感知环境、规划决策、动态执行的能力，核心优势在于处理<strong>不确定性、非结构化任务</strong>并实现<strong>目标驱动的灵活适应</strong>。</p><p>选择 Agent 还是 Workflow，并非简单的优劣判断，而是由场景驱动的适配问题。</p><ul><li>当流程固定、规则清晰时，Workflow 是提升效率的得力工具。</li><li>当面对复杂、多变、需要判断与交互的情境时，Agent 的智能与灵活性则必不可少。</li></ul><p>而在智能化转型的浪潮下，<strong>Workflow 与 Agent 的融合</strong>正成为关键趋势。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>Agent</tag>
+      
+      <tag>Workflow</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>EDR、NDR、XDR工作原理及区别</title>
+    <link href="/2026/01/05/EDR%E3%80%81NDR%E3%80%81XDR%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%8C%BA%E5%88%AB/"/>
+    <url>/2026/01/05/EDR%E3%80%81NDR%E3%80%81XDR%E5%B7%A5%E4%BD%9C%E5%8E%9F%E7%90%86%E5%8F%8A%E5%8C%BA%E5%88%AB/</url>
+    
+    <content type="html"><![CDATA[<h2 id="一、EDR（端点检测与响应）"><a href="#一、EDR（端点检测与响应）" class="headerlink" title="一、EDR（端点检测与响应）"></a>一、EDR（端点检测与响应）</h2><p>顾名思义，<code>EDR</code>主要使用场景为终端，不仅具备检测功能还具备处置能力，可以发现终端上的风险并自动处置。</p><p>EDR与传统杀毒引擎的最本质区别在于，<code>EDR</code>是基于文件行为做分析并响应，而传统杀毒大部分还是停留在文件签名，如<code>MD5</code>的检验上。</p><h3 id="工作原理"><a href="#工作原理" class="headerlink" title="工作原理"></a>工作原理</h3><p>1.<strong>数据采集</strong>：在设备终端部署代理，实时监控进程、文件操作、网络连接、注册表变更等行为数据。</p><p>2.<strong>威胁检测</strong>：与已知恶意软件特征库进行比对；通过机器学习识别文件加密、可疑进程注入等异常行为；结合情报库检测新型攻击。</p><p>3.<strong>响应机制</strong>：自动隔离设备、终止恶意进程、恢复文件；取证日志，方便攻击溯源。</p><h2 id="二、NDR（网络检测与响应）"><a href="#二、NDR（网络检测与响应）" class="headerlink" title="二、NDR（网络检测与响应）"></a>二、NDR（网络检测与响应）</h2><p><code>NTA (网络流量分析) </code>是一种网络威胁检测的技术，而<code>NDR</code>是在检测的基础上加入了流量响应能力，正因为可以对流量进行清洗，很多厂商也会将该解决方案应用于防<code>DDOS</code>攻击。</p><h3 id="工作原理-1"><a href="#工作原理-1" class="headerlink" title="工作原理"></a>工作原理</h3><p>1.<strong>数据采集</strong>：捕获全流量，深度解析<code>HTTP/DNS/TLS</code>协议。</p><p>2.<strong>威胁检测</strong>：基于流量基线识别异常；提取指纹，检测加密恶意流量软件。</p><p>3.<strong>响应机制</strong>：自动阻断恶意<code>IP</code>或联动防火墙更新策略。</p><h2 id="三、XDR（扩展检测与响应）"><a href="#三、XDR（扩展检测与响应）" class="headerlink" title="三、XDR（扩展检测与响应）"></a>三、XDR（扩展检测与响应）</h2><p><code>XDR</code>集合多种安全能力，进行功能拓展和场景定制化，<code>XDR</code>与<code>SIEM（安全信息和事件管理）</code>产品相似，为具有多个不同分析人员和控制台的企业提供方案。</p><h3 id="工作原理-2"><a href="#工作原理-2" class="headerlink" title="工作原理"></a>工作原理</h3><p>1.<strong>数据整合</strong>：聚合<code>EDR</code>、<code>NDR</code>、云日志、邮件等数据。</p><p>2.<strong>关联分析</strong>：将端点异常登录+网络横向移动关联为<code>APT</code>攻击；压缩千条告警为少数高置信事件。</p><p>3.<strong>协同响应</strong>：自动封禁<code>IP</code>、禁用云账户、修复端点、实现跨系统处置。</p><h2 id="四、横向对比"><a href="#四、横向对比" class="headerlink" title="四、横向对比"></a>四、横向对比</h2><table><thead><tr><th><strong>产品维度</strong></th><th><strong>EDR</strong></th><th><strong>NDR</strong></th><th><strong>XDR</strong></th></tr></thead><tbody><tr><td><strong>覆盖范围</strong></td><td>端点设备</td><td>网络流量</td><td>端点+网络+云+邮件等多域</td></tr><tr><td><strong>检测焦点</strong></td><td>进程异常、文件加密</td><td>流量异常、横向移动</td><td>跨域攻击链（如钓鱼→横向移动→数据渗出）</td></tr><tr><td><strong>响应机制</strong></td><td>隔离终端、终止进程</td><td>阻断<code>IP</code>、重置会话</td><td>协同响应（禁用账户+修复端点+阻断<code>IP</code>）</td></tr><tr><td><strong>优势</strong></td><td>端点深度防护，成本低</td><td>加密流量分析能力强</td><td>全视角威胁狩猎</td></tr><tr><td><strong>局限</strong></td><td>忽略网络层威胁</td><td>无法分析端点行为</td><td>部署复杂，需生态整合</td></tr></tbody></table>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>产品</tag>
+      
+      <tag>安全</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>正向代理和反向代理的区别</title>
+    <link href="/2025/12/30/%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E5%92%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E7%9A%84%E5%8C%BA%E5%88%AB/"/>
+    <url>/2025/12/30/%E6%AD%A3%E5%90%91%E4%BB%A3%E7%90%86%E5%92%8C%E5%8F%8D%E5%90%91%E4%BB%A3%E7%90%86%E7%9A%84%E5%8C%BA%E5%88%AB/</url>
+    
+    <content type="html"><![CDATA[<p>正向代理 vs 反向代理</p><table><thead><tr><th>对比维度</th><th>正向代理</th><th>反向代理</th></tr></thead><tbody><tr><td>定义</td><td><strong>客户端</strong>的代理，代表客户端访问外部服务</td><td><strong>服务端</strong>的代理，代表服务器接收并分发客户端请求</td></tr><tr><td>隐藏对象</td><td>隐藏客户端身份（服务端不知道真实请求来源）</td><td>隐藏服务端细节（客户端不知道真实处理请求的服务器）</td></tr><tr><td>客户端是否感知</td><td>客户端需主动配置代理（如浏览器设置代理服务器）</td><td>客户端无感知，直接访问反向代理地址（如访问网站域名）</td></tr><tr><td>典型应用场景</td><td>突破访问限制（如访问外网）、匿名请求、爬虫代理IP</td><td>负载均衡、安全防护（如防火墙）、缓存加速、统一入口</td></tr><tr><td>部署位置</td><td>客户端网络或独立代理服务器（如公司内网代理）</td><td>服务端网络，位于实际服务器之前（如云服务器前端）</td></tr><tr><td>常见工具</td><td>Charles、Fiddler、VPN</td><td>Nginx、Apache Traffic Server</td></tr></tbody></table><p>核心区别</p><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs md">客户端——&gt;正向代理——&gt;互联网<br>(代理代表客户端)<br><br>客户端——&gt;反向代理——&gt;内部服务器集群<br>(代理代表服务器)<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>代理</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>【Hexo】写作指南</title>
+    <link href="/2025/12/25/%E3%80%90Hexo%E3%80%91%E5%86%99%E4%BD%9C%E6%8C%87%E5%8D%97/"/>
+    <url>/2025/12/25/%E3%80%90Hexo%E3%80%91%E5%86%99%E4%BD%9C%E6%8C%87%E5%8D%97/</url>
+    
+    <content type="html"><![CDATA[<h1 id="Hexo-Fluid配置"><a href="#Hexo-Fluid配置" class="headerlink" title="Hexo Fluid配置"></a>Hexo Fluid配置</h1><p>“<strong>站点配置</strong>“ 指的 Hexo 博客目录下的 <code>_config.yml</code>，”<strong>主题配置</strong>“ 指的是 <code>theme/fluid/_config.yml</code>。</p><h2 id="覆盖配置"><a href="#覆盖配置" class="headerlink" title="覆盖配置"></a>覆盖配置</h2><p>在博客目录下创建 <code>_config.fluid.yml</code> 文件，将主题的<code>_config.yml</code>全部配置复制过去。修改配置时，只需修改<code>_config.fluid.yml</code>文件即可。</p><h1 id="写文章相关"><a href="#写文章相关" class="headerlink" title="写文章相关"></a>写文章相关</h1><p>使用下面的命令创建一个新文章：</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo new [layout] &lt;title&gt; <span class="hljs-comment"># eg: hexo new &quot;我的第一篇文章&quot;</span><br></code></pre></td></tr></table></figure><p><code>[layout]</code>默认即可。生成的文件在<code>source/_posts/我的第一篇文章.md</code></p><h2 id="分类与标签"><a href="#分类与标签" class="headerlink" title="分类与标签"></a>分类与标签</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">categories:<br>- 技术<br>tags: <br>- hexo<br>- 随笔<br></code></pre></td></tr></table></figure><ul><li>分类 <strong>有层级关系</strong>。</li><li>标签是 <strong>自由标签</strong>，无层级。</li></ul><h2 id="摘要方法"><a href="#摘要方法" class="headerlink" title="摘要方法"></a>摘要方法</h2><figure class="highlight md"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs md">在想要摘要的地方输入<br>&lt;!-- more --&gt;<br>正文<br></code></pre></td></tr></table></figure><h2 id="文章写错啦"><a href="#文章写错啦" class="headerlink" title="文章写错啦"></a>文章写错啦</h2><p>删除文章的话可以在文件夹里直接删除，删除后执行命令。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">hexo clean &amp;&amp; hexo g &amp;&amp; hexo d<br></code></pre></td></tr></table></figure><p>如果已经将文章发布到Git仓库，还需要删除<code>.deploy_git</code>文件夹，然后执行上面的命令。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>hexo</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
+    <title>【Hexo】博客搭建</title>
+    <link href="/2025/12/25/%E3%80%90Hexo%E3%80%91%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/"/>
+    <url>/2025/12/25/%E3%80%90Hexo%E3%80%91%E5%8D%9A%E5%AE%A2%E6%90%AD%E5%BB%BA/</url>
+    
+    <content type="html"><![CDATA[<h1 id="想说的话"><a href="#想说的话" class="headerlink" title="想说的话"></a>想说的话</h1><blockquote><p>路虽远，行则必至；事虽难，做则必成。</p></blockquote><p>以前的我总是过度思考，追求完美，总想着一切准备妥当了，再付诸行动。如此，即使很久以前就有搭建博客的想法，但是一直未付出行动。某一刻，突然意识到，其实迈出第一步就已经成功一半了。</p>]]></content>
+    
+    
+    
+    <tags>
+      
+      <tag>随笔</tag>
+      
+      <tag>hexo</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  
+</search>
