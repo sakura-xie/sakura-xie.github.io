@@ -1,0 +1,866 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=auto>
+
+
+
+<head>
+  <meta charset="UTF-8">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="/img/dog.png">
+  <link rel="icon" href="/img/dog.png">
+  
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#2f4154">
+  <meta name="author" content="Sakura-xie">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="FRP (Fast Reverse Proxy)是一个高性能的反向代理应用，主要用于内网穿透。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="FRP内网穿透完全指南">
+<meta property="og:url" content="https://sakura-xie.github.io/2026/01/29/FRP%E5%86%85%E7%BD%91%E7%A9%BF%E9%80%8F%E5%AE%8C%E5%85%A8%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:site_name" content="Sakura-xie&#39;s Blog">
+<meta property="og:description" content="FRP (Fast Reverse Proxy)是一个高性能的反向代理应用，主要用于内网穿透。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2026-01-29T11:17:35.000Z">
+<meta property="article:modified_time" content="2026-05-05T02:14:47.866Z">
+<meta property="article:author" content="Sakura-xie">
+<meta property="article:tag" content="FRP">
+<meta property="article:tag" content="代理">
+<meta name="twitter:card" content="summary_large_image">
+  
+  
+  
+  <title>FRP内网穿透完全指南 - Sakura-xie&#39;s Blog</title>
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
+
+
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1749284_5i9bdhy70f8.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/c/font_1736178_k526ubmyhba.css">
+
+
+<link  rel="stylesheet" href="/css/main.css" />
+
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
+
+  
+<link rel="stylesheet" href="https://jsd.cdn.zzko.cn/gh/EmoryHuang/BlogBeautify@1.1/scroll.css">
+<link rel="stylesheet" href="https://jsd.cdn.zzko.cn/gh/EmoryHuang/BlogBeautify@1.1/gradient.css">
+<link rel="stylesheet" href="/css/glassBg.css">
+
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"sakura-xie.github.io","root":"/","version":"1.9.8","typing":{"enable":true,"typeSpeed":70,"cursorChar":"_","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":true,"follow_dnt":true,"baidu":null,"google":{"measurement_id":null},"tencent":{"sid":null,"cid":null},"leancloud":{"app_id":"u5HR3OpYhCrvRxN5fklmHud6-gzGzoHsz","app_key":"gtzKcZNhHg9Am7uzMXKjV4HU","server_url":"https://u5hr3opy.lc-cn-n1-shared.com","path":"window.location.pathname","ignore_local":true},"umami":{"src":null,"website_id":null,"domains":null,"start_time":"2024-01-01T00:00:00.000Z","token":null,"api_server":null}},"search_path":"/local-search.xml","include_content_in_search":true};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
+  </script>
+  <script  src="/js/utils.js" ></script>
+  <script  src="/js/color-schema.js" ></script>
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+  
+
+
+
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+
+<body><!-- hexo injector body_begin start --><div id="web_bg"></div><!-- hexo injector body_begin end -->
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 70vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <strong>Sakura-xie&#39;s Blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/" target="_self">
+                <i class="iconfont icon-home-fill"></i>
+                <span>首页</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/archives/" target="_self">
+                <i class="iconfont icon-archive-fill"></i>
+                <span>归档</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/categories/" target="_self">
+                <i class="iconfont icon-category-fill"></i>
+                <span>分类</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/tags/" target="_self">
+                <i class="iconfont icon-tags-fill"></i>
+                <span>标签</span>
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/about/" target="_self">
+                <i class="iconfont icon-user-fill"></i>
+                <span>关于</span>
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              <i class="iconfont icon-search"></i>
+            </a>
+          </li>
+          
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">
+              <i class="iconfont icon-dark" id="color-toggle-icon"></i>
+            </a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+  
+
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/default.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
+          
+            <span id="subtitle" data-typed-text="FRP内网穿透完全指南"></span>
+          
+        </div>
+
+        
+          
+  <div class="mt-3">
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2026-01-29 19:17" pubdate>
+          2026年1月29日 晚上
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          1.8k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          15 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="leancloud-page-views-container" class="post-meta" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="leancloud-page-views"></span> 次
+        </span>
+        
+      
+      
+    
+  </div>
+
+
+        
+      </div>
+
+      
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div id="board">
+          <article class="post-content mx-auto">
+            <h1 id="seo-header">FRP内网穿透完全指南</h1>
+            
+            
+              <div class="markdown-body">
+                
+                <h2 id="FRP是什么？"><a href="#FRP是什么？" class="headerlink" title="FRP是什么？"></a>FRP是什么？</h2><p><strong>FRP (Fast Reverse Proxy)</strong> 是一个高性能的反向代理应用，主要用于<strong>内网穿透</strong>。它能够帮助你将内网中的服务（如Web、SSH、数据库等）安全地暴露到公网，让外部网络可以访问。</p>
+<h3 id="核心功能："><a href="#核心功能：" class="headerlink" title="核心功能："></a><strong>核心功能：</strong></h3><ul>
+<li><strong>内网穿透</strong>：让没有公网IP的内网服务被外网访问</li>
+<li><strong>多协议支持</strong>：TCP、UDP、HTTP、HTTPS、Socks5</li>
+<li><strong>负载均衡</strong>：支持多后端服务负载均衡</li>
+<li><strong>身份验证</strong>：Token认证、TLS加密</li>
+<li><strong>端口复用</strong>：多个服务共享同一端口</li>
+</ul>
+<h2 id="核心架构"><a href="#核心架构" class="headerlink" title="核心架构"></a>核心架构</h2><h3 id="两种部署模式对比："><a href="#两种部署模式对比：" class="headerlink" title="两种部署模式对比："></a><strong>两种部署模式对比：</strong></h3><table>
+<thead>
+<tr>
+<th align="left">模式</th>
+<th align="left">FRPC位置</th>
+<th align="left">优点</th>
+<th align="left">缺点</th>
+<th align="left">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>直接模式</strong></td>
+<td align="left">目标内网机器</td>
+<td align="left">效率高、延迟低</td>
+<td align="left">需在目标机器安装软件</td>
+<td align="left">长期服务暴露</td>
+</tr>
+<tr>
+<td align="left"><strong>转发模式</strong></td>
+<td align="left">跳板机</td>
+<td align="left">隐蔽性强、集中管理</td>
+<td align="left">多一层网络转发</td>
+<td align="left">渗透测试、临时访问</td>
+</tr>
+</tbody></table>
+<h2 id="安装部署"><a href="#安装部署" class="headerlink" title="安装部署"></a>安装部署</h2><h3 id="1-下载对应版本"><a href="#1-下载对应版本" class="headerlink" title="1. 下载对应版本"></a><strong>1. 下载对应版本</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查看系统架构</span><br><span class="hljs-built_in">uname</span> -m<br><br><span class="hljs-comment"># 下载最新版（以Linux amd64为例）</span><br>wget https://github.com/fatedier/frp/releases/download/v0.64.0/frp_0.64.0_linux_amd64.tar.gz<br><br><span class="hljs-comment"># 解压</span><br>tar -zxvf frp_0.64.0_linux_amd64.tar.gz<br><span class="hljs-built_in">cd</span> frp_0.64.0_linux_amd64<br></code></pre></td></tr></table></figure>
+
+<h3 id="2-文件说明"><a href="#2-文件说明" class="headerlink" title="2. 文件说明"></a><strong>2. 文件说明</strong></h3><figure class="highlight txt"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs txt">frps          - 服务端程序<br>frps.toml     - 服务端配置文件<br>frpc          - 客户端程序  <br>frpc.toml     - 客户端配置文件<br>*.md          - 文档说明<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="配置文件详解"><a href="#配置文件详解" class="headerlink" title="配置文件详解"></a>配置文件详解</h2><h3 id="服务端配置-frps-toml"><a href="#服务端配置-frps-toml" class="headerlink" title="服务端配置 (frps.toml)"></a><strong>服务端配置 (frps.toml)</strong></h3><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-comment"># 基础配置</span><br><span class="hljs-attr">bindPort</span> = <span class="hljs-number">7000</span>                <span class="hljs-comment"># 服务端监听端口</span><br><span class="hljs-attr">auth.method</span> = <span class="hljs-string">&quot;token&quot;</span>          <span class="hljs-comment"># 认证方式</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your_token&quot;</span>       <span class="hljs-comment"># 认证令牌（建议复杂密码）</span><br><br><span class="hljs-comment"># 管理面板（可选）</span><br><span class="hljs-attr">webServer.addr</span> = <span class="hljs-string">&quot;0.0.0.0&quot;</span>     <span class="hljs-comment"># 监听所有接口</span><br><span class="hljs-attr">webServer.port</span> = <span class="hljs-number">7500</span>           <span class="hljs-comment"># 管理面板端口</span><br><span class="hljs-attr">webServer.user</span> = <span class="hljs-string">&quot;admin&quot;</span>        <span class="hljs-comment"># 用户名</span><br><span class="hljs-attr">webServer.password</span> = <span class="hljs-string">&quot;admin&quot;</span>    <span class="hljs-comment"># 密码</span><br><br><span class="hljs-comment"># 传输配置</span><br><span class="hljs-attr">transport.tls.force</span> = <span class="hljs-literal">false</span>     <span class="hljs-comment"># 是否强制TLS</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="客户端配置-frpc-toml"><a href="#客户端配置-frpc-toml" class="headerlink" title="客户端配置 (frpc.toml)"></a><strong>客户端配置 (frpc.toml)</strong></h3><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-comment"># 连接服务端配置</span><br><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;192.168.137.20&quot;</span>   <span class="hljs-comment"># FRPS服务器IP</span><br><span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span>                <span class="hljs-comment"># FRPS服务器端口</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your_token&quot;</span>        <span class="hljs-comment"># 与服务端一致的令牌</span><br><br><span class="hljs-comment"># 代理配置（可以配置多个）</span><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;ssh-tunnel&quot;</span>              <span class="hljs-comment"># 代理名称（唯一）</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span>                     <span class="hljs-comment"># 代理类型</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;127.0.0.1&quot;</span>            <span class="hljs-comment"># 本地服务IP</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">22</span>                    <span class="hljs-comment"># 本地服务端口</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">6000</span>                 <span class="hljs-comment"># 远程暴露端口</span><br><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;web-service&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;192.168.137.30&quot;</span>        <span class="hljs-comment"># 另一台内网机器</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">80</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">6001</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="实战场景配置"><a href="#实战场景配置" class="headerlink" title="实战场景配置"></a>实战场景配置</h2><h3 id="场景1：暴露内网SSH服务"><a href="#场景1：暴露内网SSH服务" class="headerlink" title="场景1：暴露内网SSH服务"></a><strong>场景1：暴露内网SSH服务</strong></h3><p><strong>目标</strong>：让外部通过公网IP访问内网机器的SSH</p>
+<h4 id="配置："><a href="#配置：" class="headerlink" title="配置："></a><strong>配置：</strong></h4><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-comment"># frpc.toml</span><br><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;192.168.137.20&quot;</span><br><span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your_token&quot;</span><br><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;ssh&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;192.168.137.10&quot;</span>       <span class="hljs-comment"># SSH服务所在机器</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">22</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">6000</span>                 <span class="hljs-comment"># 外部访问端口</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="访问方式："><a href="#访问方式：" class="headerlink" title="访问方式："></a><strong>访问方式：</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs bash">ssh user@192.168.248.146 -p 6000<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="场景2：暴露内网Web服务"><a href="#场景2：暴露内网Web服务" class="headerlink" title="场景2：暴露内网Web服务"></a><strong>场景2：暴露内网Web服务</strong></h3><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;web-80&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;192.168.137.30&quot;</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">80</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">6001</span><br></code></pre></td></tr></table></figure>
+
+<p><strong>访问</strong>：<code>http://192.168.248.146:6001</code></p>
+<h3 id="场景3：多服务同时暴露"><a href="#场景3：多服务同时暴露" class="headerlink" title="场景3：多服务同时暴露"></a><strong>场景3：多服务同时暴露</strong></h3><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;ssh&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;192.168.137.10&quot;</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">22</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">6000</span><br><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;web1&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;192.168.137.30&quot;</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">80</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">6001</span><br><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;web2&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;192.168.137.30&quot;</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">443</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">6002</span><br><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;mysql&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;192.168.137.40&quot;</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">3306</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">6003</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="高级应用：Socks5代理"><a href="#高级应用：Socks5代理" class="headerlink" title="高级应用：Socks5代理"></a>高级应用：Socks5代理</h2><h3 id="为什么需要Socks5？"><a href="#为什么需要Socks5？" class="headerlink" title="为什么需要Socks5？"></a><strong>为什么需要Socks5？</strong></h3><ul>
+<li><strong>一次配置，全网通行</strong>：无需为每个服务单独配置</li>
+<li><strong>协议透明</strong>：支持所有TCP协议</li>
+<li><strong>灵活路由</strong>：可以配合Proxifier使用</li>
+</ul>
+<h3 id="FRP-Socks5配置（v0-64-0-）"><a href="#FRP-Socks5配置（v0-64-0-）" class="headerlink" title="FRP Socks5配置（v0.64.0+）"></a><strong>FRP Socks5配置（v0.64.0+）</strong></h3><h4 id="客户端配置："><a href="#客户端配置：" class="headerlink" title="客户端配置："></a><strong>客户端配置：</strong></h4><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-attr">serverAddr</span> = <span class="hljs-string">&quot;192.168.137.20&quot;</span><br><span class="hljs-attr">serverPort</span> = <span class="hljs-number">7000</span><br><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;your_token&quot;</span><br><br><span class="hljs-comment"># Socks5全局代理</span><br><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;socks5-tunnel&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">6000</span>                 <span class="hljs-comment"># Socks5代理端口</span><br><br><span class="hljs-section">[proxies.plugin]</span>                   <span class="hljs-comment"># 新版语法</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;socks5&quot;</span><br><span class="hljs-attr">username</span> = <span class="hljs-string">&quot;&quot;</span>                      <span class="hljs-comment"># 可选认证</span><br><span class="hljs-attr">password</span> = <span class="hljs-string">&quot;&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="版本兼容性注意："><a href="#版本兼容性注意：" class="headerlink" title="版本兼容性注意："></a><strong>版本兼容性注意：</strong></h3><table>
+<thead>
+<tr>
+<th align="left">FRP版本</th>
+<th align="left">Socks5配置语法</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">v0.52+</td>
+<td align="left"><code>[proxies.plugin] type = &quot;socks5&quot;</code></td>
+</tr>
+<tr>
+<td align="left">v0.44-v0.51</td>
+<td align="left"><code>plugin = &quot;socks5&quot;</code></td>
+</tr>
+<tr>
+<td align="left">v0.44以下</td>
+<td align="left"><code>plugin = &quot;socks5&quot;</code></td>
+</tr>
+</tbody></table>
+<h2 id="Proxifier联动配置"><a href="#Proxifier联动配置" class="headerlink" title="Proxifier联动配置"></a>Proxifier联动配置</h2><h3 id="为什么需要Proxifier？"><a href="#为什么需要Proxifier？" class="headerlink" title="为什么需要Proxifier？"></a><strong>为什么需要Proxifier？</strong></h3><ul>
+<li>实现全局代理，所有应用自动走FRP隧道</li>
+<li>细粒度控制哪些流量走代理</li>
+<li>无需修改应用配置</li>
+</ul>
+<h3 id="配置步骤："><a href="#配置步骤：" class="headerlink" title="配置步骤："></a><strong>配置步骤：</strong></h3><h4 id="1-添加代理服务器"><a href="#1-添加代理服务器" class="headerlink" title="1. 添加代理服务器"></a><strong>1. 添加代理服务器</strong></h4><ul>
+<li>打开Proxifier → <strong>Profile</strong> → <strong>Proxy Servers</strong> → <strong>Add</strong></li>
+</ul>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs text">Address: 192.168.248.146    # FRPS的公网IP<br>Port: 6000                   # Socks5代理端口<br>Protocol: SOCKS Version 5<br>Name: FRP-SOCKS5<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="2-设置代理规则"><a href="#2-设置代理规则" class="headerlink" title="2. 设置代理规则"></a><strong>2. 设置代理规则</strong></h4><ul>
+<li><strong>Profile</strong> → <strong>Proxification Rules</strong> → <strong>Add</strong></li>
+</ul>
+<p><strong>规则1：内网网段走代理</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">Name: Internal Network<br>Applications: Any<br>Target Hosts: 192.168.137.0/24<br>Target Ports: Any<br>Action: FRP-SOCKS5           # 选择刚添加的代理<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>规则2：其他流量直连</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs text">Name: Direct All<br>Applications: Any<br>Target Hosts: Any<br>Target Ports: Any<br>Action: Direct<br></code></pre></td></tr></table></figure>
+
+
+
+<h4 id="3-验证配置"><a href="#3-验证配置" class="headerlink" title="3. 验证配置"></a><strong>3. 验证配置</strong></h4><figure class="highlight cmd"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs cmd"># 直接访问内网IP<br>curl http://<span class="hljs-number">192</span>.<span class="hljs-number">168</span>.<span class="hljs-number">137</span>.<span class="hljs-number">30</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="常见问题排查"><a href="#常见问题排查" class="headerlink" title="常见问题排查"></a>常见问题排查</h2><h3 id="问题1：配置文件编码错误"><a href="#问题1：配置文件编码错误" class="headerlink" title="问题1：配置文件编码错误"></a><strong>问题1：配置文件编码错误</strong></h3><p><strong>错误信息：</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">error converting YAML to JSON: yaml: invalid leading UTF-8 octet<br></code></pre></td></tr></table></figure>
+
+<p><strong>解决方法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 检查文件编码</span><br>file frpc.toml<br><br><span class="hljs-comment"># 转换编码</span><br>iconv -f ISO-8859 -t UTF-8 frpc.toml -o frpc_utf8.toml<br><span class="hljs-built_in">mv</span> frpc_utf8.toml frpc.toml<br></code></pre></td></tr></table></figure>
+
+<h3 id="问题2：端口已被占用"><a href="#问题2：端口已被占用" class="headerlink" title="问题2：端口已被占用"></a><strong>问题2：端口已被占用</strong></h3><p><strong>错误信息：</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">bind: address already in use<br></code></pre></td></tr></table></figure>
+
+<p><strong>解决方法：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 查找占用端口的进程</span><br>netstat -tlnp | grep 7000<br><br><span class="hljs-comment"># 杀死进程</span><br><span class="hljs-built_in">kill</span> &lt;PID&gt;<br><br><span class="hljs-comment"># 或修改配置文件使用其他端口</span><br>bindPort = 7001<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="问题3：连接被拒绝"><a href="#问题3：连接被拒绝" class="headerlink" title="问题3：连接被拒绝"></a><strong>问题3：连接被拒绝</strong></h3><p><strong>错误信息：</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">connect: connection refused<br></code></pre></td></tr></table></figure>
+
+<p><strong>排查步骤：</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 1. 检查FRPS是否运行</span><br>ps aux | grep frps<br><br><span class="hljs-comment"># 2. 检查端口监听</span><br>netstat -tlnp | grep 7000<br><br><span class="hljs-comment"># 3. 测试网络连通性</span><br>telnet 192.168.137.20 7000<br><br><span class="hljs-comment"># 4. 查看日志</span><br><span class="hljs-built_in">tail</span> -f frps.log<br><span class="hljs-built_in">tail</span> -f frpc.log<br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="问题4：连接后IP不对"><a href="#问题4：连接后IP不对" class="headerlink" title="问题4：连接后IP不对"></a><strong>问题4：连接后IP不对</strong></h3><p><strong>现象</strong>：连接成功后显示的是FRPS机器的IP<br><strong>原因</strong>：<code>localIP</code> 配置错误<br><strong>解决</strong>：</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">name</span> = <span class="hljs-string">&quot;ssh&quot;</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;tcp&quot;</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;192.168.137.10&quot;</span>  <span class="hljs-comment"># ← 必须指向目标机器</span><br><span class="hljs-attr">localPort</span> = <span class="hljs-number">22</span><br><span class="hljs-attr">remotePort</span> = <span class="hljs-number">6000</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h3 id="问题5：插件配置错误"><a href="#问题5：插件配置错误" class="headerlink" title="问题5：插件配置错误"></a><strong>问题5：插件配置错误</strong></h3><p><strong>错误信息：</strong></p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs text">unmarshal ProxyConfig error: json: cannot unmarshal string into Go struct field TCPProxyConfig.plugin<br></code></pre></td></tr></table></figure>
+
+
+
+<p><strong>解决</strong>：根据版本使用正确语法</p>
+<figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-comment"># 新版 (v0.52+)</span><br><span class="hljs-section">[proxies.plugin]</span><br><span class="hljs-attr">type</span> = <span class="hljs-string">&quot;socks5&quot;</span><br><br><span class="hljs-comment"># 旧版</span><br><span class="hljs-attr">plugin</span> = <span class="hljs-string">&quot;socks5&quot;</span><br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="性能优化与安全建议"><a href="#性能优化与安全建议" class="headerlink" title="性能优化与安全建议"></a>性能优化与安全建议</h2><h3 id="性能优化："><a href="#性能优化：" class="headerlink" title="性能优化："></a><strong>性能优化：</strong></h3><h4 id="1-启用压缩（带宽有限时）"><a href="#1-启用压缩（带宽有限时）" class="headerlink" title="1. 启用压缩（带宽有限时）"></a><strong>1. 启用压缩（带宽有限时）</strong></h4><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-section">[[proxies]]</span><br><span class="hljs-attr">transport.use_compression</span> = <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-调整并发连接数"><a href="#2-调整并发连接数" class="headerlink" title="2. 调整并发连接数"></a><strong>2. 调整并发连接数</strong></h4><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-comment"># frps.toml</span><br><span class="hljs-attr">transport.maxPoolCount</span> = <span class="hljs-number">5</span>      <span class="hljs-comment"># 最大连接池数量</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="3-使用本地回环避免转发"><a href="#3-使用本地回环避免转发" class="headerlink" title="3. 使用本地回环避免转发"></a><strong>3. 使用本地回环避免转发</strong></h4><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-comment"># 如果FRPC在目标机器上</span><br><span class="hljs-attr">localIP</span> = <span class="hljs-string">&quot;127.0.0.1&quot;</span>           <span class="hljs-comment"># 走本地回环，更高效</span><br></code></pre></td></tr></table></figure>
+
+<h3 id="安全建议："><a href="#安全建议：" class="headerlink" title="安全建议："></a><strong>安全建议：</strong></h3><h4 id="1-使用强密码认证"><a href="#1-使用强密码认证" class="headerlink" title="1. 使用强密码认证"></a><strong>1. 使用强密码认证</strong></h4><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-attr">auth.token</span> = <span class="hljs-string">&quot;ComplexP@ssw0rd!2024&quot;</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="2-启用TLS加密"><a href="#2-启用TLS加密" class="headerlink" title="2. 启用TLS加密"></a><strong>2. 启用TLS加密</strong></h4><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-comment"># frps.toml</span><br><span class="hljs-attr">transport.tls.force</span> = <span class="hljs-literal">true</span><br><span class="hljs-attr">transport.tls.certFile</span> = <span class="hljs-string">&quot;/path/to/server.crt&quot;</span><br><span class="hljs-attr">transport.tls.keyFile</span> = <span class="hljs-string">&quot;/path/to/server.key&quot;</span><br><br><span class="hljs-comment"># frpc.toml  </span><br><span class="hljs-attr">transport.tls.enable</span> = <span class="hljs-literal">true</span><br></code></pre></td></tr></table></figure>
+
+<h4 id="3-限制访问IP"><a href="#3-限制访问IP" class="headerlink" title="3. 限制访问IP"></a><strong>3. 限制访问IP</strong></h4><figure class="highlight toml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs toml"><span class="hljs-comment"># frps.toml</span><br><span class="hljs-attr">allowPorts</span> = [<br>    &#123; start = <span class="hljs-number">6000</span>, end = <span class="hljs-number">6000</span> &#125;,<br>    &#123; start = <span class="hljs-number">6001</span>, end = <span class="hljs-number">6010</span> &#125;<br>]<br></code></pre></td></tr></table></figure>
+
+<h4 id="4-使用后清理"><a href="#4-使用后清理" class="headerlink" title="4. 使用后清理"></a><strong>4. 使用后清理</strong></h4><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 停止FRP服务</span><br>pkill frps<br>pkill frpc<br><br><span class="hljs-comment"># 清除日志</span><br><span class="hljs-built_in">rm</span> -f *.<span class="hljs-built_in">log</span> nohup.out<br></code></pre></td></tr></table></figure>
+
+
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><h3 id="FRP核心要点："><a href="#FRP核心要点：" class="headerlink" title="FRP核心要点："></a><strong>FRP核心要点：</strong></h3><ol>
+<li><strong>组件分工</strong>：<ul>
+<li>FRPS（服务端）：有公网IP的机器</li>
+<li>FRPC（客户端）：需要暴露服务的内网机器</li>
+</ul>
+</li>
+<li><strong>配置三要素</strong>：<ul>
+<li>认证令牌保持一致</li>
+<li>端口不能冲突</li>
+<li>localIP指向正确的服务IP</li>
+</ul>
+</li>
+<li><strong>两种模式</strong>：<ul>
+<li><strong>端口转发</strong>：适合单个服务</li>
+<li><strong>Socks5代理</strong>：适合全网穿透</li>
+</ul>
+</li>
+<li><strong>最佳实践</strong>：<ul>
+<li>先用小配置测试连通性</li>
+<li>查看日志定位问题</li>
+<li>根据场景选择合适的部署模式</li>
+</ul>
+</li>
+</ol>
+<h3 id="常用命令速查："><a href="#常用命令速查：" class="headerlink" title="常用命令速查："></a><strong>常用命令速查：</strong></h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><code class="hljs bash"><span class="hljs-comment"># 启动服务端</span><br><span class="hljs-built_in">nohup</span> ./frps -c frps.toml &gt; frps.log 2&gt;&amp;1 &amp;<br><br><span class="hljs-comment"># 启动客户端</span><br><span class="hljs-built_in">nohup</span> ./frpc -c frpc.toml &gt; frpc.log 2&gt;&amp;1 &amp;<br><br><span class="hljs-comment"># 查看进程</span><br>ps aux | grep frp<br><br><span class="hljs-comment"># 查看日志</span><br><span class="hljs-built_in">tail</span> -f frps.log<br><span class="hljs-built_in">tail</span> -f frpc.log<br><br><span class="hljs-comment"># 停止服务</span><br>pkill frps<br>pkill frpc<br></code></pre></td></tr></table></figure>
+
+<h3 id="学习路径："><a href="#学习路径：" class="headerlink" title="学习路径："></a><strong>学习路径：</strong></h3><ol>
+<li>先掌握基础TCP端口转发</li>
+<li>然后学习多服务配置</li>
+<li>最后尝试Socks5 + Proxifier联动</li>
+<li>深入理解网络转发原理</li>
+</ol>
+<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>FRP是内网穿透的利器，掌握了它，你就能够在复杂的网络环境中游刃有余。无论是开发调试、远程办公，还是安全测试，FRP都能帮你打通网络障碍。</p>
+
+                
+              </div>
+            
+            <hr/>
+            <div>
+              <div class="post-metas my-3">
+  
+    <div class="post-meta mr-3 d-flex align-items-center">
+      <i class="iconfont icon-category"></i>
+      
+
+<span class="category-chains">
+  
+  
+    
+      <span class="category-chain">
+        
+  <a href="/categories/%E6%8C%87%E5%8D%97/" class="category-chain-item">指南</a>
+  
+  
+
+      </span>
+    
+  
+</span>
+
+    </div>
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E4%BB%A3%E7%90%86/" class="print-no-link">#代理</a>
+      
+        <a href="/tags/FRP/" class="print-no-link">#FRP</a>
+      
+    </div>
+  
+</div>
+
+
+              
+
+              
+                <div class="post-prevnext my-3">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/2026/02/12/%E6%88%91%E8%B8%A9%E8%BF%87%E7%9A%84%E6%8F%90%E7%A4%BA%E8%AF%8D%E5%9D%91%EF%BC%9A16%E6%9D%A1%E5%AE%9E%E6%88%98%E8%A7%84%E5%88%99%E8%AE%A9AI%E8%BE%93%E5%87%BA%E6%9B%B4%E9%9D%A0%E8%B0%B1/" title="我踩过的提示词坑：16 条实战规则让 AI 输出更靠谱">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">我踩过的提示词坑：16 条实战规则让 AI 输出更靠谱</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/2026/01/16/%E6%8F%90%E7%A4%BA%E8%AF%8D%E7%BC%96%E5%86%99%E4%B8%8E%E4%BC%98%E5%8C%96/" title="提示词编写与优化">
+                        <span class="hidden-mobile">提示词编写与优化</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
+  <p class="toc-header">
+    <i class="iconfont icon-list"></i>
+    <span>目录</span>
+  </p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+
+
+  </aside>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+
+
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+    
+
+    
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+  
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> 
+    </div>
+  
+  
+    <div class="statistics">
+  
+  
+
+  
+    
+      <span id="leancloud-site-pv-container" style="display: none">
+        Views: 
+        <span id="leancloud-site-pv"></span>
+         次
+      </span>
+    
+    
+      <span id="leancloud-site-uv-container" style="display: none">
+        Visitors: 
+        <span id="leancloud-site-uv"></span>
+         人
+      </span>
+    
+    
+
+  
+
+</div>
+
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://lib.baomitu.com/jquery/3.6.4/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
+<script  src="/js/events.js" ></script>
+<script  src="/js/plugins.js" ></script>
+
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
+
+
+
+
+  
+    <script  src="/js/img-lazyload.js" ></script>
+  
+
+
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.20.1/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init(Object.assign({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      scrollSmooth    : true,
+      includeTitleTags: true,
+      headingsOffset  : -boardTop,
+    }, CONFIG.toc));
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('tocbot' in window) {
+        tocbot.refresh();
+        var toc = jQuery('#toc');
+        if (toc.length === 0 || !tocbot) {
+          return;
+        }
+        if (toc.find('.toc-list-item').length > 0) {
+          toc.css('visibility', 'visible');
+        }
+      }
+    });
+  });
+</script>
+
+
+  <script src=https://lib.baomitu.com/clipboard.js/2.0.11/clipboard.min.js></script>
+
+  <script>Fluid.plugins.codeWidget();</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/5.0.0/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+
+    Fluid.events.registerRefreshCallback(function() {
+      if ('anchors' in window) {
+        anchors.removeAll();
+        var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+        var res = [];
+        for (var item of el) {
+          res.push('.markdown-body > ' + item.trim());
+        }
+        if (CONFIG.anchorjs.placement === 'left') {
+          anchors.options.class = 'anchorjs-link-left';
+        }
+        anchors.add(res.join(', '));
+      }
+    });
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script defer src="/js/leancloud.js" ></script>
+
+  <script  src="/js/local-search.js" ></script>
+
+
+
+
+
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
+<script  src="/js/boot.js" ></script>
+
+
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
+<!-- hexo injector body_end start --><script src="/js/backgroundize.js"></script><!-- hexo injector body_end end --></body>
+</html>
